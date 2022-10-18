@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="59ccc6c1-849d-4fad-bdaf-e9c0b84336f3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/proj.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/App.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/client/DoDisableClientNotifications.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/client/DoDisableClientNotifications.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/client/DoEnableClientNotifications.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/client/DoEnableClientNotifications.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/client/DoRegisterClient.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/client/DoRegisterClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/client/DoShowAllClients.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/client/DoShowAllClients.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/client/DoShowClient.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/client/DoShowClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/client/DoShowClientPaymentsAndDebts.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/client/DoShowClientPaymentsAndDebts.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/client/Label.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/client/Label.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/client/Menu.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/client/Menu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/client/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/exception/DuplicateClientKeyException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/exception/DuplicateClientKeyException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/exception/DuplicateTerminalKeyException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/exception/DuplicateTerminalKeyException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/exception/FileOpenFailedException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/exception/FileOpenFailedException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/exception/InvalidTerminalKeyException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/exception/InvalidTerminalKeyException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/exception/Message.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/exception/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/exception/UnknownClientKeyException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/exception/UnknownClientKeyException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/exception/UnknownTerminalKeyException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/exception/UnknownTerminalKeyException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowAllCommunications.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowAllCommunications.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowClientsWithDebts.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowClientsWithDebts.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowClientsWithoutDebts.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowClientsWithoutDebts.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowCommunicationsFromClient.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowCommunicationsFromClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowCommunicationsToClient.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowCommunicationsToClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowTerminalsWithPositiveBalance.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowTerminalsWithPositiveBalance.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowUnusedTerminals.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowUnusedTerminals.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/Label.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/Label.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/Menu.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/Menu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/lookup/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/main/DoOpenFile.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/main/DoOpenFile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/main/DoOpenMenuClient.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/main/DoOpenMenuClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/main/DoOpenMenuLookups.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/main/DoOpenMenuLookups.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/main/DoOpenMenuTerminal.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/main/DoOpenMenuTerminal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/main/DoSaveFile.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/main/DoSaveFile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/main/DoShowGlobalBalance.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/main/DoShowGlobalBalance.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/main/Label.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/main/Label.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/main/Menu.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/main/Menu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/main/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoAddFriend.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoEndInteractiveCommunication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoPerformPayment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoRemoveFriend.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoSendTextCommunication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoShowOngoingCommunication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoShowTerminalBalance.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoSilenceTerminal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoStartInteractiveCommunication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoTurnOffTerminal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoTurnOnTerminal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminal/Label.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminal/Menu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminal/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminal/TerminalCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminals/DoOpenMenuTerminalConsole.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminals/DoOpenMenuTerminalConsole.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminals/DoRegisterTerminal.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminals/DoRegisterTerminal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminals/DoShowAllTerminals.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminals/DoShowAllTerminals.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminals/Label.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminals/Label.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminals/Menu.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminals/Menu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/app/terminals/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/BasicPlan.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/Network.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/Network.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/NetworkManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/NetworkManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/Parser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/TariffPlan.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/clients/Client.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/clients/ClientLevel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/communications/Communication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/communications/InteractiveCommunication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/communications/TextCommunication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/communications/VideoCommunication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/communications/VoiceCommunication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/exception/DuplicateClientKeyException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/exception/DuplicateClientKeyException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/exception/DuplicateTerminalKeyException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/exception/DuplicateTerminalKeyException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/exception/ImportFileException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/exception/ImportFileException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/exception/InvalidTerminalKeyException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/exception/InvalidTerminalKeyException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/exception/MissingFileAssociationException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/exception/MissingFileAssociationException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/exception/UnavailableFileException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/exception/UnavailableFileException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/exception/UnknownClientKeyException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/exception/UnknownClientKeyException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/exception/UnknownTerminalKeyException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/exception/UnknownTerminalKeyException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/exception/UnrecognizedEntryException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/exception/UnrecognizedEntryException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/notification/Notification.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/notification/NotificationType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/terminals/BasicTerminal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/terminals/FancyTerminal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/terminals/Terminal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/terminals/TerminalMode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/Dialog.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/Dialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/Display.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/Display.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/InteractionDriver.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/InteractionDriver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/Field.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/Field.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/FieldBoolean.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/FieldBoolean.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/FieldInteger.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/FieldInteger.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/FieldNone.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/FieldNone.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/FieldOption.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/FieldOption.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/FieldReal.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/FieldReal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/FieldString.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/FieldString.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/Form.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/Form.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/FormException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/FormException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/Message.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/forms/Messages.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/menus/Command.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/menus/Command.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/menus/CommandException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/menus/CommandException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/menus/DoOpenMenu.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/menus/DoOpenMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/menus/Menu.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/menus/Menu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/menus/Message.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/menus/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/swing/NewSwingInteraction.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/swing/NewSwingInteraction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/swing/Prompt.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/swing/Prompt.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/swing/SwingDialogForm.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/swing/SwingDialogForm.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/swing/SwingDialogMenu.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/swing/SwingDialogMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/swing/SwingForm.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/swing/SwingForm.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/swing/SwingInteraction.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/swing/SwingInteraction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/swing/SwingMenu.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/swing/SwingMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/swing/SwingMessage.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/swing/SwingMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/swing/SwingPanel.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/swing/SwingPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/text/CompositePrintStream.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/text/CompositePrintStream.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/text/Message.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/text/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/text/Prompt.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/text/Prompt.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/text/Properties.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/text/Property.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/text/Property.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/text/RuntimeEOFException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/text/RuntimeEOFException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/text/TextInteraction.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/tecnico/uilib/text/TextInteraction.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/prr/core/BasicPlan.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2GEMRDqZmHqzD6q8BF9KxSUEOck" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ToolWindowDebug.ShowToolbar": "false",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/joao/Desktop/Uni/PO/proj",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "preferences.sourceCode.Java"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="prr.core.exception" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="59ccc6c1-849d-4fad-bdaf-e9c0b84336f3" name="Changes" comment="" />
+      <created>1665949280038</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1665949280038</updated>
+      <workItem from="1665949281408" duration="6904000" />
+      <workItem from="1665958736026" duration="54000" />
+      <workItem from="1665998410640" duration="1590000" />
+      <workItem from="1666000198373" duration="1650000" />
+      <workItem from="1666014532041" duration="99000" />
+      <workItem from="1666049314960" duration="5874000" />
+      <workItem from="1666090511074" duration="7445000" />
+      <workItem from="1666109206901" duration="1621000" />
+      <workItem from="1666110878395" duration="6253000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/prr/core/Network.java</url>
+          <line>72</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
