@@ -1,5 +1,7 @@
 package prr.app.terminals;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import prr.core.Network;
@@ -19,8 +21,7 @@ class DoShowAllTerminals extends Command<Network> {
 
   @Override
   protected final void execute() throws CommandException {
-    List<Terminal> list = _receiver.getTerminals();
-    for (Terminal t: list)
+    for (Terminal t: _receiver.getTerminals())
       _display.addLine(t.toString());
     _display.display();
   }

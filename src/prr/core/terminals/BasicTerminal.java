@@ -13,14 +13,14 @@ public class BasicTerminal extends Terminal{
     public String toString() {
         String friends = "";
         if (!getFriends().isEmpty()) {
-            StringBuilder friendsBuilder = new StringBuilder();
+            StringBuilder friendsBuilder = new StringBuilder("|");
             for (Terminal t : getFriends()) {
                 friendsBuilder.append(t.getId()).append(",");
             }
             friends = friendsBuilder.toString();
             friends = friends.substring(0, friends.length() - 1);
         }
-        return "BASIC|%s|%s|%s|%d|%d|%s".formatted(getId(),
+        return "BASIC|%s|%s|%s|%d|%d%s".formatted(getId(),
                 getOwner().getClientKey(),
                 getTerminalStatus(),
                 Math.round(getBalancePaid()),

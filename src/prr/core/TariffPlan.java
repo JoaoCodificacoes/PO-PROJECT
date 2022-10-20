@@ -6,7 +6,9 @@ import prr.core.communications.TextCommunication;
 import prr.core.communications.VideoCommunication;
 import prr.core.communications.VoiceCommunication;
 
-public abstract class TariffPlan {
+import java.io.Serializable;
+
+public abstract class TariffPlan implements Serializable {
     private String _name;
 
     public TariffPlan(String name){

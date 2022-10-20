@@ -19,9 +19,11 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
   private ArrayList<Double> _payments;
   private TerminalMode _mode;
   private Map<String,Terminal> _friends;
-  private Map<String,Client> _toNotify;
-  private ArrayList<Communication> _madeCommunications;
-  private ArrayList<Communication> _receivedCommunications;
+  private List<Client> _toNotify;
+  private List<Communication> _madeCommunications;
+  private List<Communication> _receivedCommunications;
+
+  private boolean _new;
 
 
   /** Serial number for serialization. */
@@ -31,11 +33,12 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
   public Terminal(String id,Client c){
     _id = id;
     _owner = c;
-    _mode = TerminalMode.ON;
-    _friends = new HashMap<>();
-    _toNotify = new HashMap<>();
+    _mode = TerminalMode.IDLE;
+    _friends = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    _toNotify = new ArrayList<>();
     _debts =new ArrayList<>();
     _payments = new ArrayList<>();
+    _new = true;
   }
 
 
@@ -70,13 +73,11 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
   }
 
   public boolean setOnIdle(){
-    _mode = TerminalMode.ON;
+    _mode = TerminalMode.IDLE;
     return true;
   }
 
   public void endOngoingCommunication(int size){
-
-
   }
 
   public void makeVoiceCall(Terminal to){
@@ -102,6 +103,10 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
     return _owner;
   }
 
+
+  public void addFriend(Terminal friend){
+    _friends.putIfAbsent(friend.getId(),friend);
+  }
   public Collection<Terminal> getFriends() {
     return  _friends.values();
   }
@@ -138,5 +143,13 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
   }
   public List<Communication> getReceivedCommunications() {
     return Collections.unmodifiableList(_receivedCommunications);
+  }
+
+  public boolean isNew() {
+    return _new;
+  }
+
+  public void useTerminal(){
+    _new = false;
   }
 }

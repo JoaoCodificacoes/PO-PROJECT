@@ -1,7 +1,7 @@
 package prr.app.terminal;
 
 import prr.core.Network;
-import prr.app.exception.UnknownTerminalKeyException;
+import prr.core.exception.UnknownTerminalKeyException;
 import prr.core.terminals.Terminal;
 import pt.tecnico.uilib.forms.Form;
 import pt.tecnico.uilib.menus.CommandException;
@@ -20,6 +20,12 @@ class DoSendTextCommunication extends TerminalCommand {
   
   @Override
   protected final void execute() throws CommandException {
-    //FIXME implement command
+    try {
+      _network.getTerminal(stringField("toID")).useTerminal();
+      _receiver.useTerminal();
+    } catch (UnknownTerminalKeyException e) {
+      throw new prr.app.exception.UnknownTerminalKeyException(e.getKey());
+
+    }
   }
 } 

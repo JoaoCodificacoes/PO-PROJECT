@@ -3,9 +3,10 @@ package prr.core.clients;
 import prr.core.TariffPlan;
 import prr.core.terminals.Terminal;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Client {
+public class Client implements Serializable {
     private String _key;
     private String _name;
     private int _taxNumber;
@@ -13,6 +14,10 @@ public class Client {
     private boolean _receiveNotifications;
     private TariffPlan _tariffPlan;
     private Map<String, Terminal> _terminals;
+    /**
+     * Serial number for serialization.
+     */
+    private static final long serialVersionUID = 202208091753L;
 
     public Client(String key, String name, int taxNumber) {
         _key = key;
@@ -20,7 +25,8 @@ public class Client {
         _taxNumber = taxNumber;
         _level = ClientLevel.NORMAL;
         _receiveNotifications = true;
-        _terminals = new HashMap<>();
+        _terminals = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        _level = ClientLevel.NORMAL;
 
     }
     public String getClientKey(){
@@ -67,9 +73,10 @@ public class Client {
         String notifications = "NO";
         if (_receiveNotifications)
             notifications = "YES";
-        return "CLIENT|%s|%s|%d|%s|%d|%d|%d".formatted(_key,
+        return "CLIENT|%s|%s|%d|%s|%s|%d|%d|%d".formatted(_key,
                 _name,
                 _taxNumber,
+                _level.toString(),
                 notifications,
                 _terminals.size(),
                 Math.round(getClientPaymentBalance()),
