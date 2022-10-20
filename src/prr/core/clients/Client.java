@@ -29,43 +29,31 @@ public class Client implements Serializable {
         _level = ClientLevel.NORMAL;
 
     }
-    public String getClientKey(){
+
+    public String getClientKey() {
         return _key;
     }
 
-    public Collection<Double> getClientPayments(){
-        List<Double> payments = new ArrayList<>();
-        for (Terminal t : _terminals.values()){
-            payments.addAll(t.getPayments());
-        }
-        return (Collection<Double>) Collections.unmodifiableList(payments);
-    }
-    public double getClientPaymentBalance(){
+
+    public double getClientPaymentBalance() {
         double sum = 0;
-        for(double d : getClientPayments())
-            sum += d;
+        for (Terminal terminal : _terminals.values())
+            sum += terminal.getBalancePayments();
         return sum;
 
     }
 
-    public Collection<Double> getClientDebts(){
-        List<Double> debts = new ArrayList<>();
-        for (Terminal t : _terminals.values()){
-            debts.addAll(t.getDebts());
-        }
-        return (Collection<Double>) Collections.unmodifiableList(debts);
-    }
-    public double getClientDebtBalance(){
+    public double getClientDebtBalance() {
         double sum = 0;
-        for(double d : getClientDebts())
-            sum += d;
+        for (Terminal terminal : _terminals.values())
+            sum += terminal.getBalanceDebt();
         return sum;
+
     }
 
 
-
-    public void addTerminal(Terminal t){
-        _terminals.put(t.getId(),t);
+    public void addTerminal(Terminal t) {
+        _terminals.put(t.getId(), t);
     }
 
     @Override

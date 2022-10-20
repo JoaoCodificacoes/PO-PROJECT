@@ -5,10 +5,8 @@ import prr.core.exception.ImportFileException;
 import prr.core.exception.MissingFileAssociationException;
 import prr.core.exception.UnavailableFileException;
 import prr.core.exception.UnrecognizedEntryException;
-
 import java.io.*;
 
-//FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
 /**
  * Manage access to network and implement load/save operations.
@@ -19,7 +17,6 @@ public class NetworkManager {
      * The network itself.
      */
     private Network _network = new Network();
-    //FIXME  addmore fields if needed
 
     public Network getNetwork() {
         return _network;
@@ -78,12 +75,12 @@ public class NetworkManager {
      * Read text input file and create domain entities..
      *
      * @param fileName name of the text input file
-     * @throws ImportFileException
+     * @throws ImportFileException if something goes wrong while reading file
      */
     public void importFile(String fileName) throws ImportFileException {
         try {
             _network.importFile(fileName);
-        } catch (IOException | UnrecognizedEntryException /* FIXME maybe other exceptions */ e) {
+        } catch (IOException | UnrecognizedEntryException e) {
             throw new ImportFileException(fileName, e);
         }
     }

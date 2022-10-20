@@ -11,8 +11,6 @@ import prr.core.terminals.BasicTerminal;
 import prr.core.terminals.FancyTerminal;
 import prr.core.terminals.Terminal;
 
-// FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
-
 /**
  * Class Store implements a store.
  */
@@ -70,6 +68,10 @@ public class Network implements Serializable {
      */
     public void addFriend(String terminalId, String friend) throws UnknownTerminalKeyException {
         getTerminal(terminalId).addFriend(getTerminal(friend));
+    }
+
+    public void removeFriend(String terminalId,String friend) throws UnknownTerminalKeyException{
+        getTerminal(terminalId).removeFriend(friend);
     }
 
     /**

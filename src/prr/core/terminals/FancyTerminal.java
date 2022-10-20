@@ -10,21 +10,7 @@ public class FancyTerminal extends Terminal{
 
     @Override
     public String toString() {
-        String friends = "";
-        if (!getFriends().isEmpty()) {
-            StringBuilder friendsBuilder = new StringBuilder("|");
-            for (Terminal t : getFriends()) {
-                friendsBuilder.append(t.getId()).append(",");
-            }
-            friends = friendsBuilder.toString();
-            friends = friends.substring(0, friends.length() - 1);
-        }
-        return "FANCY|%s|%s|%s|%d|%d%s".formatted(getId(),
-                getOwner().getClientKey(),
-                getTerminalStatus(),
-                Math.round(getBalancePaid()),
-                Math.round(getBalanceDebt()),
-                friends);
+        return super.toString("FANCY");
     }
 
     public void makeVideoCall(Terminal to){
