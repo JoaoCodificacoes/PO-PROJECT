@@ -5,6 +5,7 @@ import prr.core.exception.ImportFileException;
 import prr.core.exception.MissingFileAssociationException;
 import prr.core.exception.UnavailableFileException;
 import prr.core.exception.UnrecognizedEntryException;
+
 import java.io.*;
 
 
@@ -34,7 +35,9 @@ public class NetworkManager {
      *                                  an error while processing this file.
      */
     public void load(String fileName) throws UnavailableFileException {
-        try (ObjectInputStream objIn = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fileName)))) {
+        try (ObjectInputStream objIn = new ObjectInputStream(new BufferedInputStream(
+                new FileInputStream(fileName)))) {
+
             _network = (Network) objIn.readObject();
             _fileName = fileName;
         } catch (IOException | ClassNotFoundException e) {
@@ -52,7 +55,9 @@ public class NetworkManager {
     public void save() throws FileNotFoundException, MissingFileAssociationException, IOException {
         if (_fileName == null)
             throw new MissingFileAssociationException();
-        try (ObjectOutputStream objOut = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(_fileName)))) {
+        try (ObjectOutputStream objOut = new ObjectOutputStream(new BufferedOutputStream(
+                new FileOutputStream(_fileName)))) {
+
             objOut.writeObject(_network);
         }
     }

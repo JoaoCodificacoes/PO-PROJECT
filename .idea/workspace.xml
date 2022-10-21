@@ -1,29 +1,144 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AnalysisUIOptions">
-    <option name="SCOPE_TYPE" value="3" />
-  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59ccc6c1-849d-4fad-bdaf-e9c0b84336f3" name="Changes" comment="new">
+      <change afterPath="$PROJECT_DIR$/SolucaoProjectoUML.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/prr/core/tariff/BasicPlan.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/ap01.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/ap02.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/runtests.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-01-01-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-01-01-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-01-02-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-01-02-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-01-02-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-01-03-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-01-03-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-01-04-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-01-04-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-01-04-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-01-05-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-01-05-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-01-06-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-01-06-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-03-01-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-03-01-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-03-01-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-03-02-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-03-02-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-03-03-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-03-03-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-03-03-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-04-01-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-04-01-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-04-01-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-05-01-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-05-01-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-05-02-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-05-02-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-05-02-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-05-04-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-05-04-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-05-04-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-07-01-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-07-01-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-07-01-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-07-02-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-07-02-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-07-02-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-07-03-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-07-03-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-07-03-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-07-04-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-07-04-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-07-04-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-07-05-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-07-05-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-07-05-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-08-01-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-08-01-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-08-01-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-08-02-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-08-02-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-08-02-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-08-04-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-08-04-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-08-04-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-08-06-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-08-06-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-08-06-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-09-01-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-09-01-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-09-01-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-09-02-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-09-02-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-09-02-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-09-03-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-09-03-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-09-03-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-10-01-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-10-01-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-10-01-M-ok.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-10-02-M-ok.import" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-10-02-M-ok.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submissao/tests/A-10-02-M-ok.out" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ap01.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/ap01.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ap02.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/ap02.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/client/DoDisableClientNotifications.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/client/DoDisableClientNotifications.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/client/DoDisableClientNotifications.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/client/DoDisableClientNotifications.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/client/DoEnableClientNotifications.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/client/DoEnableClientNotifications.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/client/DoEnableClientNotifications.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/client/DoEnableClientNotifications.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/client/DoRegisterClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/client/DoRegisterClient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/client/DoRegisterClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/client/DoRegisterClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/client/DoShowAllClients.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/client/DoShowAllClients.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/client/DoShowAllClients.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/client/DoShowAllClients.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/client/DoShowClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/client/DoShowClient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/client/DoShowClientPaymentsAndDebts.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/client/DoShowClientPaymentsAndDebts.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/client/DoShowClientPaymentsAndDebts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/client/DoShowClientPaymentsAndDebts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/lookup/DoShowClientsWithDebts.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowClientsWithDebts.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/lookup/DoShowClientsWithDebts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowClientsWithDebts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/lookup/DoShowClientsWithoutDebts.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowClientsWithoutDebts.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/lookup/DoShowClientsWithoutDebts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowClientsWithoutDebts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/lookup/DoShowTerminalsWithPositiveBalance.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowTerminalsWithPositiveBalance.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/lookup/DoShowTerminalsWithPositiveBalance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowTerminalsWithPositiveBalance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/lookup/DoShowUnusedTerminals.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/lookup/DoShowUnusedTerminals.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prr/app/terminal/DoAddFriend.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoAddFriend.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prr/app/terminal/DoAddFriend.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoAddFriend.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/prr/app/terminal/DoRemoveFriend.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoRemoveFriend.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/prr/app/terminal/DoRemoveFriend.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoRemoveFriend.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/terminal/DoEndInteractiveCommunication.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoEndInteractiveCommunication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/terminal/DoEndInteractiveCommunication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoEndInteractiveCommunication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/terminal/DoPerformPayment.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoPerformPayment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/terminal/DoPerformPayment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoPerformPayment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prr/app/terminal/DoShowTerminalBalance.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoShowTerminalBalance.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prr/app/terminal/DoShowTerminalBalance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/terminal/DoShowTerminalBalance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/terminals/DoOpenMenuTerminalConsole.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/terminals/DoOpenMenuTerminalConsole.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/terminals/DoOpenMenuTerminalConsole.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/terminals/DoOpenMenuTerminalConsole.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/app/terminals/DoShowAllTerminals.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/app/terminals/DoShowAllTerminals.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/core/BasicPlan.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/core/BasicPlan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/tariff/BasicPlan.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prr/core/Network.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/Network.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prr/core/Network.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/Network.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/core/NetworkManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/NetworkManager.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prr/core/NetworkManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/NetworkManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/core/TariffPlan.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/tariff/TariffPlan.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/core/TariffPlan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/tariff/TariffPlan.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prr/core/clients/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/clients/Client.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prr/core/clients/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/clients/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/core/communications/Communication.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/communications/Communication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/core/communications/Communication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/communications/Communication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/core/communications/TextCommunication.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/communications/TextCommunication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/core/communications/TextCommunication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/communications/TextCommunication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/core/communications/VideoCommunication.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/communications/VideoCommunication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/core/communications/VideoCommunication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/communications/VideoCommunication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/core/communications/VoiceCommunication.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/communications/VoiceCommunication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/core/communications/VoiceCommunication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/communications/VoiceCommunication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/core/notification/Notification.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/notification/Notification.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prr/core/notification/Notification.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/notification/Notification.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prr/core/terminals/BasicTerminal.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/terminals/BasicTerminal.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prr/core/terminals/BasicTerminal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/terminals/BasicTerminal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/prr/core/terminals/FancyTerminal.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/terminals/FancyTerminal.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prr/core/terminals/FancyTerminal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/terminals/FancyTerminal.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prr/core/terminals/Terminal.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/terminals/Terminal.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prr/core/terminals/Terminal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prr/core/terminals/Terminal.java" afterDir="false" />
@@ -48,7 +163,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/prr/core/BasicPlan.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/prr/core/tariff/BasicPlan.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -64,26 +179,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;ToolWindowDebug.ShowToolbar&quot;: &quot;false&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/joao/Desktop/Uni/PO/proj&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.Java&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ToolWindowDebug.ShowToolbar": "false",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/joao/Desktop/Uni/PO/proj",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "vcs.Git"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="prr.core.exception" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/prr/core/tariff" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -109,7 +227,9 @@
       <workItem from="1666224931421" duration="7781000" />
       <workItem from="1666266874777" duration="14250000" />
       <workItem from="1666292421804" duration="5864000" />
-      <workItem from="1666305401392" duration="1027000" />
+      <workItem from="1666305401392" duration="10765000" />
+      <workItem from="1666351875868" duration="599000" />
+      <workItem from="1666354096513" duration="7917000" />
     </task>
     <task id="LOCAL-00001" summary="new">
       <created>1666118036349</created>
@@ -125,7 +245,14 @@
       <option name="project" value="LOCAL" />
       <updated>1666294404413</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="new">
+      <created>1666306434873</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1666306434873</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

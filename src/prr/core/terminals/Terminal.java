@@ -6,6 +6,7 @@ import prr.core.communications.Communication;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
@@ -104,10 +105,6 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
     }
 
 
-    public void addFriend(Terminal friend) {
-        _friends.putIfAbsent(friend.getId(), friend);
-    }
-
     public Collection<Terminal> getFriends() {
         return _friends.values();
     }
@@ -125,11 +122,11 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
         return _payments;
     }
 
-    public List<Communication> getMadeCommunications() {
+    public Collection<Communication> getMadeCommunications() {
         return Collections.unmodifiableList(_madeCommunications);
     }
 
-    public List<Communication> getReceivedCommunications() {
+    public Collection<Communication> getReceivedCommunications() {
         return Collections.unmodifiableList(_receivedCommunications);
     }
 
@@ -141,26 +138,34 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
         _new = false;
     }
 
-    public String toString(String type) {
+
+    public void addFriend(Terminal friend) {
+        _friends.putIfAbsent(friend.getId(), friend);
+    }
+
+    public void removeFriend(String friend) {
+        _friends.remove(friend);
+    }
+
+    public String getFriendsString() {
         String friends = "";
-        if (!getFriends().isEmpty()) {
-            StringBuilder friendsBuilder = new StringBuilder("|");
-            for (Terminal t : getFriends()) {
-                friendsBuilder.append(t.getId()).append(",");
-            }
-            friends = friendsBuilder.toString();
-            friends = friends.substring(0, friends.length() - 1);
-        }
+        List<Terminal> friendList = new ArrayList<>(getFriends());
+        if (!friendList.isEmpty())
+            friends = "|" + friendList.stream()
+                    .map(Terminal::getId)
+                    .collect(Collectors.joining(","));
+        return friends;
+
+    }
+
+    public String toString(String type) {
+
         return "%s|%s|%s|%s|%d|%d%s".formatted(type,
                 getId(),
                 getOwner().getClientKey(),
                 getTerminalStatus(),
                 Math.round(getBalancePayments()),
                 Math.round(getBalanceDebt()),
-                friends);
-    }
-
-    public void removeFriend(String friend) {
-        _friends.remove(friend);
+                getFriendsString());
     }
 }

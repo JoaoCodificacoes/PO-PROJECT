@@ -1,6 +1,6 @@
 package prr.core.communications;
 
-import prr.core.TariffPlan;
+import prr.core.tariff.TariffPlan;
 
 public class TextCommunication extends Communication{
     private String _message;
@@ -10,6 +10,7 @@ public class TextCommunication extends Communication{
     }
 
     protected double computeCost(TariffPlan plan){
+        //FIXME implement
         return 0;
     }
     protected int getSize() {

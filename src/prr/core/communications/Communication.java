@@ -1,11 +1,12 @@
 package prr.core.communications;
 
-import prr.core.TariffPlan;
+import prr.core.tariff.TariffPlan;
 import prr.core.terminals.Terminal;
 
 import java.io.Serializable;
 
 public abstract class Communication implements Serializable {
+
     private int _id;
     private boolean _isPaid;
     private double _cost;
@@ -21,6 +22,7 @@ public abstract class Communication implements Serializable {
     protected abstract int getSize();
 
     public String toString(){
+        //FIXME implement
         return null;
     }
 }

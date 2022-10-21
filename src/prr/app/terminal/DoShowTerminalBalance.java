@@ -10,13 +10,14 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoShowTerminalBalance extends TerminalCommand {
 
-  DoShowTerminalBalance(Network context, Terminal terminal) {
-    super(Label.SHOW_BALANCE, context, terminal);
-  }
-  
-  @Override
-  protected final void execute() throws CommandException {
-    //FIXME implement command
-    Message.terminalPaymentsAndDebts(_receiver.getId(), (long) _receiver.getBalanceDebt(), (long) _receiver.getBalancePayments());
-  }
+    DoShowTerminalBalance(Network context, Terminal terminal) {
+        super(Label.SHOW_BALANCE, context, terminal);
+    }
+
+    @Override
+    protected final void execute() throws CommandException {
+        _display.popup(Message.terminalPaymentsAndDebts(_receiver.getId(),
+                Math.round(_receiver.getBalanceDebt()) ,
+                Math.round(_receiver.getBalancePayments())));
+    }
 }

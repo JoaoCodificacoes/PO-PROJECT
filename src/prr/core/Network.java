@@ -7,16 +7,17 @@ import java.util.*;
 import prr.core.clients.Client;
 import prr.core.communications.Communication;
 import prr.core.exception.*;
+import prr.core.tariff.TariffPlan;
 import prr.core.terminals.BasicTerminal;
 import prr.core.terminals.FancyTerminal;
 import prr.core.terminals.Terminal;
 
 /**
- * Class Store implements a store.
+ * Class Network implements Serializable.
  */
 public class Network implements Serializable {
     /**
-     * Stores every Communication that happened on the network mapping it to its ID
+     * Stores every Communication that happens on the network mapping it to its ID
      */
     private Map<String, Communication> _communications;
     /**
@@ -32,6 +33,10 @@ public class Network implements Serializable {
      */
     private Map<String, Terminal> _terminals;
 
+    /**
+     * Serial number for serialization.
+     */
+    private static final long serialVersionUID = 202208091753L;
 
     /**
      * Instances the network by initializing its several Collections
@@ -42,11 +47,6 @@ public class Network implements Serializable {
         _terminals = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         _communications = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     }
-
-    /**
-     * Serial number for serialization.
-     */
-    private static final long serialVersionUID = 202208091753L;
 
 
     /**
@@ -70,13 +70,13 @@ public class Network implements Serializable {
         getTerminal(terminalId).addFriend(getTerminal(friend));
     }
 
-    public void removeFriend(String terminalId,String friend) throws UnknownTerminalKeyException{
+    public void removeFriend(String terminalId, String friend) throws UnknownTerminalKeyException {
         getTerminal(terminalId).removeFriend(friend);
     }
 
     /**
-     * @param type       wether the terminal is BASIC or FANCY
-     * @param idTerminal ID of the terminal to regist
+     * @param type       whether the terminal is BASIC or FANCY
+     * @param idTerminal ID of the terminal to register
      * @param idClient   ID of the client that owns the terminal
      */
     public Terminal registerTerminal(String type, String idTerminal, String idClient) throws DuplicateTerminalKeyException,
@@ -88,17 +88,17 @@ public class Network implements Serializable {
         if (_terminals.containsKey(idTerminal))
             throw new DuplicateTerminalKeyException(idTerminal);
 
-        Client c = getClient(idClient);
+        Client client = getClient(idClient);
 
-        Terminal t;
+        Terminal terminal;
         if (type.equals("FANCY"))
-            t = new FancyTerminal(idTerminal, c);
+            terminal = new FancyTerminal(idTerminal, client);
         else
-            t = new BasicTerminal(idTerminal, c);
+            terminal = new BasicTerminal(idTerminal, client);
 
-        _terminals.put(idTerminal, t);
-        c.addTerminal(t);
-        return t;
+        _terminals.put(idTerminal, terminal);
+        client.addTerminal(terminal);
+        return terminal;
     }
 
     /**
@@ -117,7 +117,7 @@ public class Network implements Serializable {
      * @return network's client list
      */
     public Collection<Client> getClients() {
-        return List.copyOf(_clients.values());
+        return _clients.values();
     }
 
 
@@ -136,8 +136,8 @@ public class Network implements Serializable {
     /**
      * @return network's terminal list
      */
-    public List<Terminal> getTerminals() {
-        return List.copyOf(_terminals.values());
+    public Collection<Terminal> getTerminals() {
+        return _terminals.values();
     }
 
     public Terminal getTerminal(String id) throws UnknownTerminalKeyException {
@@ -153,7 +153,7 @@ public class Network implements Serializable {
      * @param msg   Communication content
      */
     public void sendTextCommunication(Terminal from, String toKey, String msg) {
-
+        //FIXME implement
     }
 
     /**
@@ -162,7 +162,17 @@ public class Network implements Serializable {
      * @param type  Communication type(Voice/Video)
      */
     public void sendInteractiveCommunication(Terminal from, String toKey, String type) {
-
+        //FIXME implement
     }
+
+    /**
+     * @param clientId client ID
+     * @param notisOn  true to set notificationsOn / false to set NotificationsOff
+     * @return true if changes were made / false if no changes were made
+     */
+    public boolean ChangeClientNotificationState(String clientId, boolean notisOn) throws UnknownClientKeyException {
+        return getClient(clientId).ChangeNotificationState(notisOn);
+    }
+
 }
 

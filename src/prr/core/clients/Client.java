@@ -1,6 +1,6 @@
 package prr.core.clients;
 
-import prr.core.TariffPlan;
+import prr.core.tariff.TariffPlan;
 import prr.core.terminals.Terminal;
 
 import java.io.Serializable;
@@ -12,6 +12,7 @@ public class Client implements Serializable {
     private int _taxNumber;
     private ClientLevel _level;
     private boolean _receiveNotifications;
+
     private TariffPlan _tariffPlan;
     private Map<String, Terminal> _terminals;
     /**
@@ -26,7 +27,6 @@ public class Client implements Serializable {
         _level = ClientLevel.NORMAL;
         _receiveNotifications = true;
         _terminals = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        _level = ClientLevel.NORMAL;
 
     }
 
@@ -69,5 +69,18 @@ public class Client implements Serializable {
                 _terminals.size(),
                 Math.round(getClientPaymentBalance()),
                 Math.round(getClientDebtBalance()));
+    }
+
+    /**
+     * @param notisOn true = notification On / false = notification Off
+     * @return true if state changed / false otherwise
+     */
+    public boolean ChangeNotificationState(boolean notisOn) {
+        /* if state and receiveNotifications are equal it means it is already on the wanted state */
+        if (notisOn == _receiveNotifications)
+            return false;
+        /* if it isn't on the wanted state set it*/
+        _receiveNotifications = notisOn;
+        return true;
     }
 }

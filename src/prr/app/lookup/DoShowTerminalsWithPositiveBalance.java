@@ -16,6 +16,8 @@ class DoShowTerminalsWithPositiveBalance extends Command<Network> {
 
   @Override
   protected final void execute() throws CommandException {
-    //FIXME implement command
+    _display.popup(_receiver.getClients()
+            .stream()
+            .filter(client -> client.getClientDebtBalance() < client.getClientPaymentBalance()));
   }
 }

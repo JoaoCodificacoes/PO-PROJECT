@@ -14,10 +14,10 @@ public class FancyTerminal extends Terminal{
     }
 
     public void makeVideoCall(Terminal to){
-
+        //FIXME implement
     }
 
     protected void acceptVideoCall(Terminal from){
-
+        //FIXME implement
     }
 }

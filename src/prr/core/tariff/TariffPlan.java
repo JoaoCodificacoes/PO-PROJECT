@@ -1,4 +1,4 @@
-package prr.core;
+package prr.core.tariff;
 
 
 import prr.core.clients.Client;
