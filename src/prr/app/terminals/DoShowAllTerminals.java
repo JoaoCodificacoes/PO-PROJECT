@@ -1,9 +1,5 @@
 package prr.app.terminals;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 import prr.core.Network;
 import prr.core.terminals.Terminal;
 import pt.tecnico.uilib.menus.Command;

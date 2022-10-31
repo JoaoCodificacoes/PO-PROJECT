@@ -13,7 +13,6 @@ public class BasicPlan extends TariffPlan {
 
     @Override
     protected double computeCost(Client cl, TextCommunication com) {
-        //FIXME implement
         return 0;
     }
 

@@ -1,11 +1,12 @@
 package prr.app.lookup;
 
 import prr.core.Network;
+import prr.core.clients.Client;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
 
 /**
- * Show clients with positive balance.
+ * Show clients without debts.
  */
 class DoShowClientsWithoutDebts extends Command<Network> {
 
@@ -15,8 +16,9 @@ class DoShowClientsWithoutDebts extends Command<Network> {
 
   @Override
   protected final void execute() throws CommandException {
-    _display.popup(_receiver.getClients()
-            .stream()
-            .filter(client -> client.getClientDebtBalance() == 0));
+    for (Client client: _receiver.getClients())
+      if (client.getClientDebtBalance() == 0)
+        _display.addLine(client.toString());
+    _display.display();
   }
 }

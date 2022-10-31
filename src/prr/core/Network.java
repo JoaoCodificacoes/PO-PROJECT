@@ -1,9 +1,5 @@
 package prr.core;
 
-import java.io.Serializable;
-import java.io.IOException;
-import java.util.*;
-
 import prr.core.clients.Client;
 import prr.core.communications.Communication;
 import prr.core.exception.*;
@@ -12,9 +8,22 @@ import prr.core.terminals.BasicTerminal;
 import prr.core.terminals.FancyTerminal;
 import prr.core.terminals.Terminal;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.TreeMap;
+
 /**
  * Class Network implements Serializable.
+ * This class manages a several terminals, communications and clients, provisioning several services to its users
+ *
+ * @authors Joao Ferreira (103680) and Miguel Teixeira (103449)
+ * @group 49
  */
+
 public class Network implements Serializable {
     /**
      * Stores every Communication that happens on the network mapping it to its ID
@@ -27,7 +36,7 @@ public class Network implements Serializable {
     /**
      * List of Tariff plans available on the network
      */
-    private ArrayList<TariffPlan> tariffPlans;
+    private ArrayList<TariffPlan> _tariffPlans;
     /**
      * Stores every Terminal in the network mapping them to their ID's
      */
@@ -43,7 +52,7 @@ public class Network implements Serializable {
      */
     public Network() {
         _clients = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        tariffPlans = new ArrayList<>();
+        _tariffPlans = new ArrayList<>();
         _terminals = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         _communications = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     }
@@ -67,7 +76,8 @@ public class Network implements Serializable {
      * @throws UnknownTerminalKeyException if there is no terminal with the ids provided
      */
     public void addFriend(String terminalId, String friend) throws UnknownTerminalKeyException {
-        getTerminal(terminalId).addFriend(getTerminal(friend));
+        if (!terminalId.equals(friend))
+            getTerminal(terminalId).addFriend(getTerminal(friend));
     }
 
     public void removeFriend(String terminalId, String friend) throws UnknownTerminalKeyException {
@@ -170,8 +180,8 @@ public class Network implements Serializable {
      * @param notisOn  true to set notificationsOn / false to set NotificationsOff
      * @return true if changes were made / false if no changes were made
      */
-    public boolean ChangeClientNotificationState(String clientId, boolean notisOn) throws UnknownClientKeyException {
-        return getClient(clientId).ChangeNotificationState(notisOn);
+    public boolean changeClientNotificationState(String clientId, boolean notisOn) throws UnknownClientKeyException {
+        return getClient(clientId).changeNotificationState(notisOn);
     }
 
 }

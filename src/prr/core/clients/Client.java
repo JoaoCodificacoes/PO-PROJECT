@@ -4,12 +4,16 @@ import prr.core.tariff.TariffPlan;
 import prr.core.terminals.Terminal;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Client implements Serializable {
-    private String _key;
-    private String _name;
-    private int _taxNumber;
+    private final String _key;
+    private final String _name;
+    private final int _taxNumber;
+
+
+
     private ClientLevel _level;
     private boolean _receiveNotifications;
 
@@ -20,11 +24,23 @@ public class Client implements Serializable {
      */
     private static final long serialVersionUID = 202208091753L;
 
+    public abstract class ClientLevel implements Serializable{
+        public abstract void checkLevel();
+        public abstract String getLevel();
+        protected void setLevel(ClientLevel level){
+            _level = level;
+        }
+        protected Client getClient(){
+            return Client.this;
+        }
+
+    }
+
     public Client(String key, String name, int taxNumber) {
         _key = key;
         _name = name;
         _taxNumber = taxNumber;
-        _level = ClientLevel.NORMAL;
+        _level = new NormalLevel(this);
         _receiveNotifications = true;
         _terminals = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
@@ -51,6 +67,9 @@ public class Client implements Serializable {
 
     }
 
+    public double getClientBalance(){
+        return getClientPaymentBalance()-getClientDebtBalance();
+    }
 
     public void addTerminal(Terminal t) {
         _terminals.put(t.getId(), t);
@@ -75,7 +94,7 @@ public class Client implements Serializable {
      * @param notisOn true = notification On / false = notification Off
      * @return true if state changed / false otherwise
      */
-    public boolean ChangeNotificationState(boolean notisOn) {
+    public boolean changeNotificationState(boolean notisOn) {
         /* if state and receiveNotifications are equal it means it is already on the wanted state */
         if (notisOn == _receiveNotifications)
             return false;
@@ -83,4 +102,5 @@ public class Client implements Serializable {
         _receiveNotifications = notisOn;
         return true;
     }
+
 }

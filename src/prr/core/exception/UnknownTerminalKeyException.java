@@ -1,7 +1,5 @@
 package prr.core.exception;
 
-import pt.tecnico.uilib.menus.CommandException;
-
 /** Exception for unknown terminals. */
 public class UnknownTerminalKeyException extends Exception {
 

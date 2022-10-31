@@ -1,7 +1,5 @@
 package prr.core.exception;
 
-import pt.tecnico.uilib.menus.CommandException;
-
 /** Exception thrown when a client key is duplicated. */
 public class DuplicateClientKeyException extends Exception {
 

@@ -3,6 +3,7 @@ package prr.core.terminals;
 
 import prr.core.clients.Client;
 import prr.core.communications.Communication;
+import prr.core.communications.InteractiveCommunication;
 
 import java.io.Serializable;
 import java.util.*;
@@ -21,8 +22,10 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
     private TerminalMode _mode;
     private Map<String, Terminal> _friends;
     private List<Client> _toNotify;
-    private List<Communication> _madeCommunications;
-    private List<Communication> _receivedCommunications;
+    private Map<String, Communication> _madeCommunications;
+    private Map<String, Communication> _receivedCommunications;
+
+    private Communication _ongoingCommunication;
 
     private boolean _new;
 
@@ -32,13 +35,33 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
      */
     private static final long serialVersionUID = 202208091753L;
 
+    public abstract class TerminalMode {
+        /* if terminal mode is the same that is asked for return false
+           if terminal mode is changed or can't be changed return true
+         */
+        public abstract boolean toOff();
+        public abstract boolean toIdle();
+        public abstract boolean toBusy();
+        public abstract boolean toSilence();
+
+        public abstract boolean canStartComm();
+        public abstract boolean canEndComm();
+        public void setMode(TerminalMode mode){
+            _mode = mode;
+        }
+        public Terminal getTerminal(){
+            return Terminal.this;
+        }
+    }
 
     public Terminal(String id, Client c) {
         _id = id;
         _owner = c;
-        _mode = TerminalMode.IDLE;
-        _friends = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        _mode = new IdleMode(this);
+        _friends = new TreeMap<>();
         _toNotify = new ArrayList<>();
+        _madeCommunications = new TreeMap<>();
+        _receivedCommunications = new TreeMap<>();
         _new = true;
     }
 
@@ -50,7 +73,7 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
      * it was the originator of this communication.
      **/
     public boolean canEndCurrentCommunication() {
-        return _mode.equals(TerminalMode.BUSY);
+        return _mode.canEndComm() && _ongoingCommunication.getFrom().equals(this);
     }
 
     /**
@@ -59,37 +82,41 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
      * @return true if this terminal is neither off neither busy, false otherwise.
      **/
     public boolean canStartCommunication() {
-        return !(_mode.equals(TerminalMode.OFF) || _mode.equals(TerminalMode.BUSY));
+        return _mode.canStartComm();
     }
 
     public boolean setOnSilent() {
-        _mode = TerminalMode.SILENCE;
-        return true;
+
+        return _mode.toSilence();
     }
 
     public boolean turnOff() {
-        _mode = TerminalMode.OFF;
-        return true;
+        return _mode.toOff();
     }
 
     public boolean setOnIdle() {
-        _mode = TerminalMode.IDLE;
-        return true;
+        return _mode.toIdle();
     }
 
     public void endOngoingCommunication(int size) {
+        if (canEndCurrentCommunication()){}
+        //FIXME implement
     }
 
     public void makeVoiceCall(Terminal to) {
+        //FIXME implement
     }
 
     protected void acceptVoiceCall(Terminal from) {
+        //FIXME implement
     }
 
     public void makeSMS(Terminal to, String message) {
+        //FIXME implement
     }
 
     protected void acceptSMS(Terminal from) {
+        //FIXME implement
     }
 
     protected abstract void makeVideoCall(Terminal to);
@@ -109,8 +136,8 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
         return _friends.values();
     }
 
-    public TerminalMode getTerminalStatus() {
-        return _mode;
+    public String getTerminalMode() {
+        return _mode.toString();
     }
 
 
@@ -123,11 +150,11 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
     }
 
     public Collection<Communication> getMadeCommunications() {
-        return Collections.unmodifiableList(_madeCommunications);
+        return _madeCommunications.values();
     }
 
     public Collection<Communication> getReceivedCommunications() {
-        return Collections.unmodifiableList(_receivedCommunications);
+        return _receivedCommunications.values();
     }
 
     public boolean isNew() {
@@ -163,7 +190,7 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
         return "%s|%s|%s|%s|%d|%d%s".formatted(type,
                 getId(),
                 getOwner().getClientKey(),
-                getTerminalStatus(),
+                getTerminalMode(),
                 Math.round(getBalancePayments()),
                 Math.round(getBalanceDebt()),
                 getFriendsString());

@@ -10,7 +10,8 @@ public class TextCommunication extends Communication{
     }
 
     protected double computeCost(TariffPlan plan){
-        //FIXME implement
+        int n = getSize();
+
         return 0;
     }
     protected int getSize() {

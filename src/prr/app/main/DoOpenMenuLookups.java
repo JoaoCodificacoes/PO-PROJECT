@@ -1,6 +1,5 @@
 package prr.app.main;
 
-import prr.core.Network;
 import prr.core.NetworkManager;
 import pt.tecnico.uilib.menus.Command;
 

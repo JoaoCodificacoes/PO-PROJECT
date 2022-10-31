@@ -25,4 +25,8 @@ public abstract class Communication implements Serializable {
         //FIXME implement
         return null;
     }
+
+    public Terminal getFrom() {
+        return _from;
+    }
 }

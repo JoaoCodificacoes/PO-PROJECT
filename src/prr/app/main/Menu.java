@@ -1,7 +1,6 @@
 package prr.app.main;
 
 import prr.core.NetworkManager;
-import pt.tecnico.uilib.menus.DoOpenMenu;
 
 /**
  * Main menu.

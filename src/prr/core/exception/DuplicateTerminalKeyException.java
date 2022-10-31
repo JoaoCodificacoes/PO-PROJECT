@@ -1,7 +1,5 @@
 package prr.core.exception;
 
-import pt.tecnico.uilib.menus.CommandException;
-
 /** Exception thrown when a terminal key is duplicated. */
 public class DuplicateTerminalKeyException extends Exception {
 

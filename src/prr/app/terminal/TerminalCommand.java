@@ -1,10 +1,10 @@
 package prr.app.terminal;
 
-import java.util.function.Predicate;
-
 import prr.core.Network;
 import prr.core.terminals.Terminal;
 import pt.tecnico.uilib.menus.Command;
+
+import java.util.function.Predicate;
 
 /**
  * Commands for terminals may sometimes need to consider the network context.
