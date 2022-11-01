@@ -11,20 +11,20 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoSendTextCommunication extends TerminalCommand {
 
-  DoSendTextCommunication(Network context, Terminal terminal) {
-    super(Label.SEND_TEXT_COMMUNICATION, context, terminal, receiver -> receiver.canStartCommunication());
-    addStringField("toID",Message.terminalKey());
-    addStringField("message",Message.textMessage());
-  }
-  
-  @Override
-  protected final void execute() throws CommandException {
-    try {
-      _network.getTerminal(stringField("toID")).useTerminal();
-      _receiver.useTerminal();
-    } catch (UnknownTerminalKeyException e) {
-      throw new prr.app.exception.UnknownTerminalKeyException(e.getKey());
-
+    DoSendTextCommunication(Network context, Terminal terminal) {
+        super(Label.SEND_TEXT_COMMUNICATION, context, terminal, receiver -> receiver.canStartCommunication());
+        addStringField("toID", Message.terminalKey());
+        addStringField("message", Message.textMessage());
     }
-  }
+
+    @Override
+    protected final void execute() throws CommandException {
+        try {
+            _network.getTerminal(stringField("toID")).useTerminal();
+            _receiver.useTerminal();
+        } catch (UnknownTerminalKeyException e) {
+            throw new prr.app.exception.UnknownTerminalKeyException(e.getKey());
+
+        }
+    }
 } 

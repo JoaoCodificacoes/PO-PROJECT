@@ -10,17 +10,17 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoRemoveFriend extends TerminalCommand {
 
-  DoRemoveFriend(Network context, Terminal terminal) {
-    super(Label.REMOVE_FRIEND, context, terminal);
-    addStringField("friendID",Message.terminalKey());
-  }
-  
-  @Override
-  protected final void execute() throws CommandException {
-    try {
-      _network.removeFriend(_receiver.getId(), stringField("friendID"));
-    } catch (UnknownTerminalKeyException e) {
-      throw new prr.app.exception.UnknownTerminalKeyException(e.getKey());
+    DoRemoveFriend(Network context, Terminal terminal) {
+        super(Label.REMOVE_FRIEND, context, terminal);
+        addStringField("friendID", Message.terminalKey());
     }
-  }
+
+    @Override
+    protected final void execute() throws CommandException {
+        try {
+            _network.removeFriend(_receiver.getId(), stringField("friendID"));
+        } catch (UnknownTerminalKeyException e) {
+            throw new prr.app.exception.UnknownTerminalKeyException(e.getKey());
+        }
+    }
 }

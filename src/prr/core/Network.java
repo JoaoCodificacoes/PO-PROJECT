@@ -10,7 +10,6 @@ import prr.core.terminals.Terminal;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;

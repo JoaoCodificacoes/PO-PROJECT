@@ -15,7 +15,6 @@ public class Notification {
 
     @Override
     public String toString() {
-        //FIXME implement
-        return null;
+        return _type.toString() +"|"+_notifyingTerminal.getId();
     }
 }

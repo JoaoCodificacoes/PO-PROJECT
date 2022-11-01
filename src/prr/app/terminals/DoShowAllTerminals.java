@@ -11,14 +11,14 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoShowAllTerminals extends Command<Network> {
 
-  DoShowAllTerminals(Network receiver) {
-    super(Label.SHOW_ALL_TERMINALS, receiver);
-  }
+    DoShowAllTerminals(Network receiver) {
+        super(Label.SHOW_ALL_TERMINALS, receiver);
+    }
 
-  @Override
-  protected final void execute() throws CommandException {
-    for (Terminal t: _receiver.getTerminals())
-      _display.addLine(t.toString());
-    _display.display();
-  }
+    @Override
+    protected final void execute() throws CommandException {
+        for (Terminal t : _receiver.getTerminals())
+            _display.addLine(t.toString());
+        _display.display();
+    }
 }

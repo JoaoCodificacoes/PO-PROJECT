@@ -34,17 +34,7 @@ public class IdleMode extends TerminalMode {
     }
 
     @Override
-    public boolean canStartComm() {
-        return true;
-    }
-
-    @Override
-    public boolean canEndComm() {
-        return false;
-    }
-
-    @Override
-    public String toString(){
+    public String toString() {
         return "IDLE";
     }
 }

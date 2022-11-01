@@ -3,9 +3,9 @@ package prr.core.terminals;
 
 import prr.core.clients.Client;
 
-public class BasicTerminal extends Terminal{
+public class BasicTerminal extends Terminal {
 
-    public BasicTerminal(String id, Client c){
+    public BasicTerminal(String id, Client c) {
         super(id, c);
     }
 
@@ -14,12 +14,12 @@ public class BasicTerminal extends Terminal{
         return super.toString("BASIC");
     }
 
-    public void makeVideoCall(Terminal to){
+    public void makeVideoCall(Terminal to) {
         //FIXME implement
 
     }
 
-    protected void acceptVideoCall(Terminal from){
+    protected void acceptVideoCall(Terminal from) {
         //FIXME implement
     }
 

@@ -7,7 +7,7 @@ import prr.core.communications.VoiceCommunication;
 
 public class BasicPlan extends TariffPlan {
 
-    public BasicPlan(String name){
+    public BasicPlan(String name) {
         super(name);
     }
 

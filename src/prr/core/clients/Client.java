@@ -1,36 +1,44 @@
 package prr.core.clients;
 
+import prr.core.notification.Observer;
+import prr.core.notification.Notification;
 import prr.core.tariff.TariffPlan;
 import prr.core.terminals.Terminal;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.TreeMap;
 
-public class Client implements Serializable {
+public class Client implements Serializable , Observer {
     private final String _key;
     private final String _name;
     private final int _taxNumber;
-
 
 
     private ClientLevel _level;
     private boolean _receiveNotifications;
 
     private TariffPlan _tariffPlan;
+
+    private Queue<Notification> _notifications;
     private Map<String, Terminal> _terminals;
     /**
      * Serial number for serialization.
      */
     private static final long serialVersionUID = 202208091753L;
 
-    public abstract class ClientLevel implements Serializable{
-        public abstract void checkLevel();
-        public abstract String getLevel();
-        protected void setLevel(ClientLevel level){
+
+
+    public abstract class ClientLevel implements Serializable {
+        public abstract void checkClientLevelComm();
+        public  void checkClientLevelPayment(){}
+        protected void setLevel(ClientLevel level) {
             _level = level;
         }
-        protected Client getClient(){
+
+        protected Client getClient() {
             return Client.this;
         }
 
@@ -43,7 +51,7 @@ public class Client implements Serializable {
         _level = new NormalLevel(this);
         _receiveNotifications = true;
         _terminals = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-
+        _notifications = new LinkedList<>();
     }
 
     public String getClientKey() {
@@ -67,8 +75,8 @@ public class Client implements Serializable {
 
     }
 
-    public double getClientBalance(){
-        return getClientPaymentBalance()-getClientDebtBalance();
+    public double getClientBalance() {
+        return getClientPaymentBalance() - getClientDebtBalance();
     }
 
     public void addTerminal(Terminal t) {
@@ -103,4 +111,16 @@ public class Client implements Serializable {
         return true;
     }
 
+    // either called in a payment or after comm
+    public void checkClientLevel(boolean payment){
+        if (payment)
+            _level.checkClientLevelPayment();
+        else
+            _level.checkClientLevelComm();
+    }
+
+    @Override
+    public void update(Notification noti) {
+        _notifications.add(noti);
+    }
 }

@@ -1,9 +1,12 @@
 package prr.core.terminals;
 
 
+import prr.core.notification.Observer;
+import prr.core.notification.Subject;
 import prr.core.clients.Client;
 import prr.core.communications.Communication;
 import prr.core.communications.InteractiveCommunication;
+import prr.core.notification.Notification;
 
 import java.io.Serializable;
 import java.util.*;
@@ -14,18 +17,18 @@ import java.util.stream.Collectors;
 /**
  * Abstract terminal.
  */
-public abstract class Terminal implements Serializable /* FIXME maybe add more interfaces */ {
+public abstract class Terminal implements Serializable , Subject/* FIXME maybe add more interfaces */ {
     private final Client _owner;
     private final String _id;
     private double _debt;
     private double _payments;
     private TerminalMode _mode;
     private Map<String, Terminal> _friends;
-    private List<Client> _toNotify;
-    private Map<String, Communication> _madeCommunications;
-    private Map<String, Communication> _receivedCommunications;
+    private List<Observer> _toNotify;
+    private Map<Integer, Communication> _madeCommunications;
+    private Map<Integer, Communication> _receivedCommunications;
 
-    private Communication _ongoingCommunication;
+    private InteractiveCommunication _ongoingCommunication;
 
     private boolean _new;
 
@@ -38,18 +41,37 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
     public abstract class TerminalMode {
         /* if terminal mode is the same that is asked for return false
            if terminal mode is changed or can't be changed return true
+           by default all set to true, can be overriden in child class
          */
-        public abstract boolean toOff();
-        public abstract boolean toIdle();
-        public abstract boolean toBusy();
-        public abstract boolean toSilence();
+        public boolean toOff() {
+            return true;
+        }
 
-        public abstract boolean canStartComm();
-        public abstract boolean canEndComm();
-        public void setMode(TerminalMode mode){
+        public boolean toIdle() {
+            return true;
+        }
+
+        public boolean toBusy() {
+            return true;
+        }
+
+        public boolean toSilence() {
+            return true;
+        }
+
+        public boolean canStartComm() {
+            return true;
+        }
+
+        public boolean canEndComm() {
+            return false;
+        }
+
+        public void setMode(TerminalMode mode) {
             _mode = mode;
         }
-        public Terminal getTerminal(){
+
+        public Terminal getTerminal() {
             return Terminal.this;
         }
     }
@@ -99,12 +121,19 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
     }
 
     public void endOngoingCommunication(int size) {
-        if (canEndCurrentCommunication()){}
-        //FIXME implement
+        if (!canEndCurrentCommunication())
+            return;
+        _ongoingCommunication.setDuration(size);
+        _ongoingCommunication.setIsOngoing(false);
+        _debt += _ongoingCommunication.getCost();
+        _madeCommunications.put(_ongoingCommunication.getId(),_ongoingCommunication);
+        _ongoingCommunication = null;
+        setOnIdle();
     }
 
     public void makeVoiceCall(Terminal to) {
-        //FIXME implement
+        if (canStartCommunication())
+            _mode.toBusy();
     }
 
     protected void acceptVoiceCall(Terminal from) {
@@ -157,6 +186,18 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
         return _receivedCommunications.values();
     }
 
+    public boolean payComm(int commId) {
+        Communication comm = _madeCommunications.get(commId);
+        if (comm == null || comm.isOngoing() || comm.isPaid())
+            return false;
+        double cost = comm.getCost();
+        _debt -= cost;
+        _payments += cost;
+        comm.setIsPaid(true);
+        _owner.checkClientLevel(true);
+        return true;
+    }
+
     public boolean isNew() {
         return _new;
     }
@@ -194,5 +235,17 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
                 Math.round(getBalancePayments()),
                 Math.round(getBalanceDebt()),
                 getFriendsString());
+    }
+
+    public void attach(Observer o){
+        _toNotify.add(o);
+    }
+    public void dettach(Observer o){
+        _toNotify.remove(o);
+    }
+
+    public void notify(Notification noti){
+        for (Observer o:_toNotify)
+            o.update(noti);
     }
 }

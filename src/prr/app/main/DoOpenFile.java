@@ -12,18 +12,18 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoOpenFile extends Command<NetworkManager> {
 
-  DoOpenFile(NetworkManager receiver) {
-    super(Label.OPEN_FILE, receiver);
-    addStringField("fileName", Message.openFile());
-  }
-  
-  @Override
-  protected final void execute() throws CommandException {
-      try {
-        _receiver.load(stringField("fileName"));
+    DoOpenFile(NetworkManager receiver) {
+        super(Label.OPEN_FILE, receiver);
+        addStringField("fileName", Message.openFile());
+    }
 
-      } catch (UnavailableFileException ufe) {
-        throw new FileOpenFailedException(ufe);
-      }
-  }
+    @Override
+    protected final void execute() throws CommandException {
+        try {
+            _receiver.load(stringField("fileName"));
+
+        } catch (UnavailableFileException ufe) {
+            throw new FileOpenFailedException(ufe);
+        }
+    }
 }

@@ -36,7 +36,7 @@ public class Parser {
     private void parseLine(String line) throws UnrecognizedEntryException {
         String[] components = line.split("\\|");
 
-        switch(components[0]) {
+        switch (components[0]) {
             case "CLIENT" -> parseClient(components, line);
             case "BASIC", "FANCY" -> parseTerminal(components, line);
             case "FRIENDS" -> parseFriends(components, line);
@@ -69,7 +69,7 @@ public class Parser {
 
         try {
             Terminal terminal = _network.registerTerminal(components[0], components[1], components[2]);
-            switch(components[3]) {
+            switch (components[3]) {
                 case "SILENCE" -> terminal.setOnSilent();
                 case "OFF" -> terminal.turnOff();
                 default -> {

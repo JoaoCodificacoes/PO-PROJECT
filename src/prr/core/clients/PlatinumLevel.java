@@ -9,7 +9,7 @@ public class PlatinumLevel extends ClientLevel {
     }
 
     @Override
-    public void checkLevel() {
+    public void checkClientLevelComm() {
         Client c = getClient();
         //Can't be promoted best level is Platinum
         //Demotion
@@ -19,7 +19,7 @@ public class PlatinumLevel extends ClientLevel {
     }
 
     @Override
-    public String getLevel() {
+    public String toString() {
         return "PLATINUM";
     }
 

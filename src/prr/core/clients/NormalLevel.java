@@ -10,14 +10,14 @@ public class NormalLevel extends ClientLevel {
     }
 
     @Override
-    public void checkLevel() {
+    public void checkClientLevelComm() {
         //Promotion
         if (getClient().getClientBalance() > UPGRADE_BALANCE)
             setLevel(new GoldLevel(getClient()));
     }
 
     @Override
-    public String getLevel() {
+    public String toString() {
         return "NORMAL";
     }
 

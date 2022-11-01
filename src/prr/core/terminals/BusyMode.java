@@ -11,11 +11,6 @@ public class BusyMode extends TerminalMode {
     }
 
     @Override
-    public boolean toOff() {
-        return true;
-    }
-
-    @Override
     public boolean toIdle() {
         setMode(new IdleMode(getTerminal()));
         return true;
@@ -43,7 +38,7 @@ public class BusyMode extends TerminalMode {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "BUSY";
     }
 }

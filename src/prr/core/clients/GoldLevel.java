@@ -9,7 +9,12 @@ public class GoldLevel extends ClientLevel {
     }
 
     @Override
-    public void checkLevel() {
+    public void checkClientLevelComm() {
+
+    }
+
+    @Override
+    public void checkClientLevelPayment() {
         Client c = getClient();
         if (c.getClientBalance() < 0)
             setLevel(new NormalLevel((c)));
@@ -17,7 +22,7 @@ public class GoldLevel extends ClientLevel {
     }
 
     @Override
-    public String getLevel() {
+    public String toString() {
         return "GOLD";
     }
 }

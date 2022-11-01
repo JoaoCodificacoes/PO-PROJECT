@@ -33,17 +33,9 @@ public class SilenceMode extends TerminalMode {
         return false;
     }
 
-    public boolean canStartComm(){
-        return true;
-    }
 
     @Override
-    public boolean canEndComm() {
-        return false;
-    }
-
-    @Override
-    public String toString(){
+    public String toString() {
         return "SILENCE";
     }
 }
