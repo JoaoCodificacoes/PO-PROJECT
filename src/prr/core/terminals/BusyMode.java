@@ -1,5 +1,9 @@
 package prr.core.terminals;
 
+import prr.core.exception.DestinationBusyException;
+import prr.core.exception.DestinationOffException;
+import prr.core.exception.DestinationSilentException;
+import prr.core.notification.B2iNotification;
 import prr.core.terminals.Terminal.TerminalMode;
 
 public class BusyMode extends TerminalMode {
@@ -13,6 +17,8 @@ public class BusyMode extends TerminalMode {
     @Override
     public boolean toIdle() {
         setMode(new IdleMode(getTerminal()));
+        setNewNotificationType(new B2iNotification());
+        notify(getNewNotificationType());
         return true;
     }
 
@@ -30,6 +36,11 @@ public class BusyMode extends TerminalMode {
     @Override
     public boolean canStartComm() {
         return false;
+    }
+
+    @Override
+    public void getCall() throws DestinationOffException, DestinationSilentException, DestinationBusyException {
+        throw new DestinationBusyException(getTerminal().getId());
     }
 
     @Override

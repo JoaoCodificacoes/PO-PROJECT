@@ -1,12 +1,11 @@
 package prr.core.terminals;
 
 
-import prr.core.notification.Observer;
-import prr.core.notification.Subject;
 import prr.core.clients.Client;
-import prr.core.communications.Communication;
-import prr.core.communications.InteractiveCommunication;
-import prr.core.notification.Notification;
+import prr.core.communications.*;
+import prr.core.exception.*;
+import prr.core.notification.Observer;
+import prr.core.notification.*;
 
 import java.io.Serializable;
 import java.util.*;
@@ -17,16 +16,17 @@ import java.util.stream.Collectors;
 /**
  * Abstract terminal.
  */
-public abstract class Terminal implements Serializable , Subject/* FIXME maybe add more interfaces */ {
+public abstract class Terminal implements Serializable /* FIXME maybe add more interfaces */ {
     private final Client _owner;
     private final String _id;
     private double _debt;
     private double _payments;
     private TerminalMode _mode;
     private Map<String, Terminal> _friends;
-    private List<Observer> _toNotify;
+    private Set<Observer> _toNotify;
     private Map<Integer, Communication> _madeCommunications;
     private Map<Integer, Communication> _receivedCommunications;
+
 
     private InteractiveCommunication _ongoingCommunication;
 
@@ -38,7 +38,11 @@ public abstract class Terminal implements Serializable , Subject/* FIXME maybe a
      */
     private static final long serialVersionUID = 202208091753L;
 
-    public abstract class TerminalMode {
+
+    public abstract class TerminalMode implements Subject , Serializable {
+
+        private NotificationType _newNotificationType = new O2iNotification();
+
         /* if terminal mode is the same that is asked for return false
            if terminal mode is changed or can't be changed return true
            by default all set to true, can be overriden in child class
@@ -59,13 +63,19 @@ public abstract class Terminal implements Serializable , Subject/* FIXME maybe a
             return true;
         }
 
+        public boolean canEndComm() {
+            return false;
+        }
+
         public boolean canStartComm() {
             return true;
         }
 
-        public boolean canEndComm() {
-            return false;
+        public void getText() throws DestinationOffException {
         }
+
+        public abstract void getCall() throws DestinationOffException,
+                DestinationSilentException, DestinationBusyException;
 
         public void setMode(TerminalMode mode) {
             _mode = mode;
@@ -74,17 +84,44 @@ public abstract class Terminal implements Serializable , Subject/* FIXME maybe a
         public Terminal getTerminal() {
             return Terminal.this;
         }
+
+        public void attach(Observer o) {
+            _toNotify.add(o);
+        }
+
+        public void dettach(Observer o) {
+            _toNotify.remove(o);
+        }
+
+        public void notify(NotificationType notiType) {
+            Terminal fromTerminal = getTerminal();
+            Notification noti;
+            for (Observer o : _toNotify) {
+                noti = new Notification(notiType, fromTerminal);
+                o.update(noti);
+            }
+            _toNotify.clear();
+        }
+
+        public NotificationType getNewNotificationType() {
+            return _newNotificationType;
+        }
+
+        public void setNewNotificationType(NotificationType newNotificationType) {
+            _newNotificationType = newNotificationType;
+        }
+
     }
 
     public Terminal(String id, Client c) {
         _id = id;
         _owner = c;
-        _mode = new IdleMode(this);
         _friends = new TreeMap<>();
-        _toNotify = new ArrayList<>();
+        _toNotify = new HashSet<>();
         _madeCommunications = new TreeMap<>();
         _receivedCommunications = new TreeMap<>();
         _new = true;
+        _mode = new IdleMode(this);
     }
 
 
@@ -95,7 +132,7 @@ public abstract class Terminal implements Serializable , Subject/* FIXME maybe a
      * it was the originator of this communication.
      **/
     public boolean canEndCurrentCommunication() {
-        return _mode.canEndComm() && _ongoingCommunication.getFrom().equals(this);
+        return _mode.canEndComm() && _ongoingCommunication != null && _ongoingCommunication.getFrom().equals(this);
     }
 
     /**
@@ -120,37 +157,59 @@ public abstract class Terminal implements Serializable , Subject/* FIXME maybe a
         return _mode.toIdle();
     }
 
-    public void endOngoingCommunication(int size) {
-        if (!canEndCurrentCommunication())
-            return;
+    public double endOngoingCommunication(int size) {
         _ongoingCommunication.setDuration(size);
-        _ongoingCommunication.setIsOngoing(false);
+        _ongoingCommunication.stopComm();
+        double cost = _ongoingCommunication.getCost();
         _debt += _ongoingCommunication.getCost();
-        _madeCommunications.put(_ongoingCommunication.getId(),_ongoingCommunication);
+        _madeCommunications.put(_ongoingCommunication.getId(), _ongoingCommunication);
+        _owner.getClientLevel().checkClientLevelComm();
+
+        _ongoingCommunication.getTo().setOngoingComm(null);
         _ongoingCommunication = null;
         setOnIdle();
+        return cost;
     }
 
-    public void makeVoiceCall(Terminal to) {
-        if (canStartCommunication())
-            _mode.toBusy();
+    public VoiceCommunication makeVoiceCall(Terminal to) throws DestinationOffException,
+            DestinationSilentException, DestinationBusyException {
+
+        to.acceptVoiceCall(this);
+        VoiceCommunication c = new VoiceCommunication(this, to);
+        to.addReceivedComm(c);
+        addMadeComm(c);
+        to.setOngoingComm(c);
+        setOngoingComm(c);
+        _mode.toBusy();
+        return c;
     }
 
-    protected void acceptVoiceCall(Terminal from) {
-        //FIXME implement
+    protected void acceptVoiceCall(Terminal from) throws DestinationOffException,
+            DestinationSilentException, DestinationBusyException {
+        _mode.getCall();
+        _mode.toBusy();
     }
 
-    public void makeSMS(Terminal to, String message) {
-        //FIXME implement
+    public TextCommunication makeSMS(Terminal to, String message) throws DestinationOffException {
+        to.acceptSMS(this);
+        TextCommunication c = new TextCommunication(message, this, to);
+        c.stopComm();
+        to.addReceivedComm(c);
+        addMadeComm(c);
+        addDebt(c.getCost());
+        return c;
     }
 
-    protected void acceptSMS(Terminal from) {
-        //FIXME implement
+    protected void acceptSMS(Terminal from) throws DestinationOffException {
+        _mode.getText();
     }
 
-    protected abstract void makeVideoCall(Terminal to);
+    public abstract VideoCommunication makeVideoCall(Terminal to) throws UnsupportedAtOriginException,
+            DestinationSilentException, DestinationOffException,
+            DestinationBusyException, UnsupportedAtDestinationException;
 
-    protected abstract void acceptVideoCall(Terminal to);
+    protected abstract void acceptVideoCall(Terminal to) throws UnsupportedAtDestinationException,
+            DestinationBusyException, DestinationOffException, DestinationSilentException;
 
     public String getId() {
         return _id;
@@ -165,8 +224,8 @@ public abstract class Terminal implements Serializable , Subject/* FIXME maybe a
         return _friends.values();
     }
 
-    public String getTerminalMode() {
-        return _mode.toString();
+    public TerminalMode getTerminalMode() {
+        return _mode;
     }
 
 
@@ -178,12 +237,10 @@ public abstract class Terminal implements Serializable , Subject/* FIXME maybe a
         return _payments;
     }
 
-    public Collection<Communication> getMadeCommunications() {
-        return _madeCommunications.values();
-    }
+    public double getBalance(){return _payments-_debt;}
 
-    public Collection<Communication> getReceivedCommunications() {
-        return _receivedCommunications.values();
+    public void addDebt(double debt) {
+        _debt += debt;
     }
 
     public boolean payComm(int commId) {
@@ -194,7 +251,7 @@ public abstract class Terminal implements Serializable , Subject/* FIXME maybe a
         _debt -= cost;
         _payments += cost;
         comm.setIsPaid(true);
-        _owner.checkClientLevel(true);
+        _owner.getClientLevel().checkClientLevelPayment();
         return true;
     }
 
@@ -206,6 +263,13 @@ public abstract class Terminal implements Serializable , Subject/* FIXME maybe a
         _new = false;
     }
 
+    public void addMadeComm(Communication c) {
+        _madeCommunications.put(c.getId(), c);
+    }
+
+    public void addReceivedComm(Communication c) {
+        _receivedCommunications.put(c.getId(), c);
+    }
 
     public void addFriend(Terminal friend) {
         _friends.putIfAbsent(friend.getId(), friend);
@@ -213,6 +277,14 @@ public abstract class Terminal implements Serializable , Subject/* FIXME maybe a
 
     public void removeFriend(String friend) {
         _friends.remove(friend);
+    }
+
+    public boolean isFriend(Terminal terminal) {
+        return _friends.containsKey(terminal.getId());
+    }
+
+    public InteractiveCommunication getOngoingCommunication() {
+        return _ongoingCommunication;
     }
 
     public String getFriendsString() {
@@ -226,6 +298,11 @@ public abstract class Terminal implements Serializable , Subject/* FIXME maybe a
 
     }
 
+
+    public void setOngoingComm(InteractiveCommunication c) {
+        _ongoingCommunication = c;
+    }
+
     public String toString(String type) {
 
         return "%s|%s|%s|%s|%d|%d%s".formatted(type,
@@ -237,15 +314,7 @@ public abstract class Terminal implements Serializable , Subject/* FIXME maybe a
                 getFriendsString());
     }
 
-    public void attach(Observer o){
-        _toNotify.add(o);
-    }
-    public void dettach(Observer o){
-        _toNotify.remove(o);
-    }
-
-    public void notify(Notification noti){
-        for (Observer o:_toNotify)
-            o.update(noti);
+    public Collection<Communication> getMadeCommunications(){
+        return _madeCommunications.values();
     }
 }

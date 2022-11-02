@@ -16,9 +16,8 @@ class DoShowUnusedTerminals extends Command<Network> {
 
     @Override
     protected final void execute() throws CommandException {
-        for (Terminal t : _receiver.getTerminals())
-            if (t.isNew())
-                _display.addLine(t.toString());
+        for (Terminal t : _receiver.getUnusedTerminals())
+            _display.addLine(t.toString());
         _display.display();
 
     }

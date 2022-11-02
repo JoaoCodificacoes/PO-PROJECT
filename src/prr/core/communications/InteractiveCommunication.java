@@ -2,11 +2,12 @@ package prr.core.communications;
 
 import prr.core.terminals.Terminal;
 
-public abstract class InteractiveCommunication extends Communication{
+public abstract class InteractiveCommunication extends Communication {
     private int _duration;
 
     public InteractiveCommunication(Terminal from, Terminal to) {
         super(from, to);
+        startComm();
     }
 
     protected int getSize() {

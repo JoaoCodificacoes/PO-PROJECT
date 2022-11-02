@@ -15,6 +15,6 @@ public class Notification {
 
     @Override
     public String toString() {
-        return _type.toString() +"|"+_notifyingTerminal.getId();
+        return _type.toString() + "|" + _notifyingTerminal.getId();
     }
 }

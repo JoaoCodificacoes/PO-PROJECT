@@ -1,6 +1,7 @@
 package prr.app.terminal;
 
 import prr.core.Network;
+import prr.core.exception.DestinationOffException;
 import prr.core.exception.UnknownTerminalKeyException;
 import prr.core.terminals.Terminal;
 import pt.tecnico.uilib.menus.CommandException;
@@ -12,9 +13,9 @@ import pt.tecnico.uilib.menus.CommandException;
 class DoSendTextCommunication extends TerminalCommand {
 
     DoSendTextCommunication(Network context, Terminal terminal) {
-        super(Label.SEND_TEXT_COMMUNICATION, context, terminal, receiver -> receiver.canStartCommunication());
+        super(Label.SEND_TEXT_COMMUNICATION, context, terminal, Terminal::canStartCommunication);
         addStringField("toID", Message.terminalKey());
-        addStringField("message", Message.textMessage());
+        addStringField("msg", Message.textMessage());
     }
 
     @Override
@@ -24,7 +25,6 @@ class DoSendTextCommunication extends TerminalCommand {
             _receiver.useTerminal();
         } catch (UnknownTerminalKeyException e) {
             throw new prr.app.exception.UnknownTerminalKeyException(e.getKey());
-
         }
     }
 } 

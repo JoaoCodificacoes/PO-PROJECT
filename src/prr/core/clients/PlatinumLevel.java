@@ -4,6 +4,7 @@ import prr.core.clients.Client.ClientLevel;
 
 public class PlatinumLevel extends ClientLevel {
 
+    private static final int DOWNGRADE_TEXT_COUNT = 2;
     public PlatinumLevel(Client client) {
         client.super();
     }
@@ -14,9 +15,29 @@ public class PlatinumLevel extends ClientLevel {
         //Can't be promoted best level is Platinum
         //Demotion
         if (c.getClientBalance() < 0)
+            setLevel(new NormalLevel(c));
+        else if (getTextCount() == DOWNGRADE_TEXT_COUNT)
             setLevel(new GoldLevel(c));
-        setLevel(new NormalLevel(c));
+
     }
+
+    @Override
+    public double computeTextCommCost(int n) {
+        if (n<50)
+            return 0;
+        return 4;
+    }
+
+    @Override
+    public double computeVideoCommCost(int n) {
+        return 10;
+    }
+
+    @Override
+    public double computeVoiceCommCost(int n) {
+        return 10;
+    }
+
 
     @Override
     public String toString() {

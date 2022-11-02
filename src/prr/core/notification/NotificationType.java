@@ -3,6 +3,6 @@ package prr.core.notification;
 /**
  *
  */
-public interface NotificationType {
+public abstract class NotificationType implements Serializable  {
 
 }

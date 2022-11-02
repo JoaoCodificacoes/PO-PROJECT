@@ -17,7 +17,7 @@ class DoShowTerminalsWithPositiveBalance extends Command<Network> {
     @Override
     protected final void execute() throws CommandException {
         for (Terminal terminal : _receiver.getTerminals())
-            if (terminal.getBalanceDebt() < terminal.getBalancePayments())
+            if (terminal.getBalance() > 0)
                 _display.addLine(terminal);
         _display.display();
 

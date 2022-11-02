@@ -1,5 +1,9 @@
 package prr.core.terminals;
 
+
+import prr.core.exception.DestinationBusyException;
+import prr.core.exception.DestinationOffException;
+import prr.core.exception.DestinationSilentException;
 import prr.core.terminals.Terminal.TerminalMode;
 
 public class IdleMode extends TerminalMode {
@@ -32,6 +36,9 @@ public class IdleMode extends TerminalMode {
         setMode(new SilenceMode(getTerminal()));
         return true;
     }
+
+    @Override
+    public void getCall() throws DestinationOffException, DestinationSilentException, DestinationBusyException {}
 
     @Override
     public String toString() {

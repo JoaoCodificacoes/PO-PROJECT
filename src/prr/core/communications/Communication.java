@@ -1,6 +1,6 @@
 package prr.core.communications;
 
-import prr.core.tariff.TariffPlan;
+
 import prr.core.terminals.Terminal;
 
 import java.io.Serializable;
@@ -24,16 +24,21 @@ public abstract class Communication implements Serializable {
         _to = to;
         _idNumber++;
         _id = _idNumber;
-        _isOngoing = true;
     }
 
-    protected abstract double computeCost(TariffPlan plan);
+    protected abstract double computeCost();
 
     protected abstract int getSize();
 
-    public String toString() {
-        //FIXME implement
-        return null;
+
+    public String toString(String type) {
+        String onGoing;
+        if (_isOngoing)
+            onGoing = "ONGOING";
+        else
+            onGoing = "FINISHED";
+        return type + "|" + _id + "|" + _from.getId() + "|" +
+                _to.getId() + "|" + getSize() + "|" + Math.round(_cost) + "|" + onGoing;
     }
 
     public Terminal getFrom() {
@@ -56,11 +61,23 @@ public abstract class Communication implements Serializable {
         return _cost;
     }
 
-    public void setIsOngoing(boolean isOngoing) {
-        _isOngoing = isOngoing;
+    public void stopComm() {
+        _isOngoing = false;
+        computeCost();
     }
 
+    protected void startComm(){
+        _isOngoing = true;
+    }
     public int getId() {
         return _id;
+    }
+
+    public void setCost(double cost) {
+        _cost = cost;
+    }
+
+    public Terminal getTo() {
+        return _to;
     }
 }

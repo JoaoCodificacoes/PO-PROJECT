@@ -1,39 +1,39 @@
 package prr.core.clients;
 
-import prr.core.notification.Observer;
+import prr.core.communications.Communication;
 import prr.core.notification.Notification;
-import prr.core.tariff.TariffPlan;
+import prr.core.notification.Observer;
 import prr.core.terminals.Terminal;
 
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
-import java.util.TreeMap;
+import java.util.*;
 
-public class Client implements Serializable , Observer {
+public class Client implements Serializable, Observer {
     private final String _key;
     private final String _name;
     private final int _taxNumber;
-
-
     private ClientLevel _level;
     private boolean _receiveNotifications;
 
-    private TariffPlan _tariffPlan;
-
     private Queue<Notification> _notifications;
-    private Map<String, Terminal> _terminals;
+    private List<Terminal> _terminals;//List
     /**
      * Serial number for serialization.
      */
     private static final long serialVersionUID = 202208091753L;
 
 
-
     public abstract class ClientLevel implements Serializable {
+
+        private static int COMMS_NEEDED = 5;
+        private int _textCount;
+        private int _videoCount;
+
         public abstract void checkClientLevelComm();
-        public  void checkClientLevelPayment(){}
+
+        public void checkClientLevelPayment() {
+        }
+
         protected void setLevel(ClientLevel level) {
             _level = level;
         }
@@ -42,6 +42,27 @@ public class Client implements Serializable , Observer {
             return Client.this;
         }
 
+        public abstract double computeTextCommCost(int n);
+
+        public abstract double computeVideoCommCost(int n);
+
+        public abstract double computeVoiceCommCost(int n);
+
+        public int getTextCount() {
+            return _textCount;
+        }
+
+        public void setTextCount(int textCount) {
+            _textCount = textCount;
+        }
+
+        public int getVideoCount() {
+            return _videoCount;
+        }
+
+        public void setVideoCount(int videoCount) {
+            _videoCount = videoCount;
+        }
     }
 
     public Client(String key, String name, int taxNumber) {
@@ -50,7 +71,7 @@ public class Client implements Serializable , Observer {
         _taxNumber = taxNumber;
         _level = new NormalLevel(this);
         _receiveNotifications = true;
-        _terminals = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        _terminals = new ArrayList<>();
         _notifications = new LinkedList<>();
     }
 
@@ -61,7 +82,7 @@ public class Client implements Serializable , Observer {
 
     public double getClientPaymentBalance() {
         double sum = 0;
-        for (Terminal terminal : _terminals.values())
+        for (Terminal terminal : _terminals)
             sum += terminal.getBalancePayments();
         return sum;
 
@@ -69,7 +90,7 @@ public class Client implements Serializable , Observer {
 
     public double getClientDebtBalance() {
         double sum = 0;
-        for (Terminal terminal : _terminals.values())
+        for (Terminal terminal : _terminals)
             sum += terminal.getBalanceDebt();
         return sum;
 
@@ -80,7 +101,7 @@ public class Client implements Serializable , Observer {
     }
 
     public void addTerminal(Terminal t) {
-        _terminals.put(t.getId(), t);
+        _terminals.add(t);
     }
 
     @Override
@@ -111,12 +132,8 @@ public class Client implements Serializable , Observer {
         return true;
     }
 
-    // either called in a payment or after comm
-    public void checkClientLevel(boolean payment){
-        if (payment)
-            _level.checkClientLevelPayment();
-        else
-            _level.checkClientLevelComm();
+    public ClientLevel getClientLevel() {
+        return _level;
     }
 
     @Override
