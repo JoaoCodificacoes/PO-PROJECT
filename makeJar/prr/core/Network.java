@@ -1,16 +1,17 @@
 package prr.core;
 
-import java.io.Serializable;
-import java.io.IOException;
-import java.util.*;
-
 import prr.core.clients.Client;
 import prr.core.communications.Communication;
+import prr.core.communications.InteractiveCommunication;
+import prr.core.communications.TextCommunication;
 import prr.core.exception.*;
-import prr.core.tariff.TariffPlan;
 import prr.core.terminals.BasicTerminal;
 import prr.core.terminals.FancyTerminal;
 import prr.core.terminals.Terminal;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Class Network implements Serializable.
@@ -24,19 +25,15 @@ public class Network implements Serializable {
     /**
      * Stores every Communication that happens on the network mapping it to its ID
      */
-    private Map<String, Communication> _communications;
+    private final SortedMap<Integer, Communication> _communications;
     /**
      * Stores every Client in the network mapping them to their ID's
      */
-    private Map<String, Client> _clients;
-    /**
-     * List of Tariff plans available on the network
-     */
-    private ArrayList<TariffPlan> tariffPlans;
+    private final SortedMap<String, Client> _clients;
     /**
      * Stores every Terminal in the network mapping them to their ID's
      */
-    private Map<String, Terminal> _terminals;
+    private final SortedMap<String, Terminal> _terminals;
 
     /**
      * Serial number for serialization.
@@ -48,9 +45,8 @@ public class Network implements Serializable {
      */
     public Network() {
         _clients = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        tariffPlans = new ArrayList<>();
         _terminals = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        _communications = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        _communications = new TreeMap<>();
     }
 
 
@@ -72,7 +68,8 @@ public class Network implements Serializable {
      * @throws UnknownTerminalKeyException if there is no terminal with the ids provided
      */
     public void addFriend(String terminalId, String friend) throws UnknownTerminalKeyException {
-        getTerminal(terminalId).addFriend(getTerminal(friend));
+        if (!terminalId.equals(friend))
+            getTerminal(terminalId).addFriend(getTerminal(friend));
     }
 
     public void removeFriend(String terminalId, String friend) throws UnknownTerminalKeyException {
@@ -157,8 +154,12 @@ public class Network implements Serializable {
      * @param toKey Communication destination ID
      * @param msg   Communication content
      */
-    public void sendTextCommunication(Terminal from, String toKey, String msg) {
-        //FIXME implement
+    public void sendTextCommunication(Terminal from, String toKey, String msg) throws UnknownTerminalKeyException, DestinationOffException {
+        Terminal to = getTerminal(toKey);
+        TextCommunication comm = from.makeSMS(to,msg);
+        _communications.put(comm.getId(),comm);
+        from.useTerminal();
+        to.useTerminal();
     }
 
     /**
@@ -166,8 +167,19 @@ public class Network implements Serializable {
      * @param toKey Communication destination ID
      * @param type  Communication type(Voice/Video)
      */
-    public void sendInteractiveCommunication(Terminal from, String toKey, String type) {
-        //FIXME implement
+    public void sendInteractiveCommunication(Terminal from, String toKey, String type) throws UnknownTerminalKeyException,
+            DestinationOffException, DestinationSilentException, DestinationBusyException,
+            UnsupportedAtDestinationException, UnsupportedAtOriginException {
+
+        Terminal to = getTerminal(toKey);
+        InteractiveCommunication comm;
+        if (type.equals("VOICE"))
+            comm = from.makeVoiceCall(to);
+        else
+            comm = from.makeVideoCall(to);
+        from.useTerminal();
+        to.useTerminal();
+        _communications.put(comm.getId(),comm);
     }
 
     /**
@@ -175,8 +187,21 @@ public class Network implements Serializable {
      * @param notisOn  true to set notificationsOn / false to set NotificationsOff
      * @return true if changes were made / false if no changes were made
      */
-    public boolean ChangeClientNotificationState(String clientId, boolean notisOn) throws UnknownClientKeyException {
-        return getClient(clientId).ChangeNotificationState(notisOn);
+    public boolean changeClientNotificationState(String clientId, boolean notisOn) throws UnknownClientKeyException {
+        return getClient(clientId).changeNotificationState(notisOn);
+    }
+
+    public  Collection<Communication> getAllComms(){
+        return _communications.values();
+    }
+
+    public Collection<Terminal> getUnusedTerminals(){
+        List<Terminal> unusedTerminals = new ArrayList<>();
+        for (Terminal t :_terminals.values())
+            if (t.isNew())
+                unusedTerminals.add(t);
+
+        return unusedTerminals;
     }
 
 }

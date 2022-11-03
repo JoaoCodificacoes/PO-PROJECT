@@ -19,7 +19,7 @@ class DoEnableClientNotifications extends Command<Network> {
     protected final void execute() throws CommandException {
         boolean notisOn = true;
         try {
-            if (!_receiver.changeClientNotificationState(stringField("clientID"), notisOn))
+            if (!_receiver.setClientNotificationPreference(stringField("clientID"), notisOn))
                 _display.popup(Message.clientNotificationsAlreadyEnabled());
         } catch (UnknownClientKeyException ucke) {
             throw new prr.app.exception.UnknownClientKeyException(ucke.getKey());

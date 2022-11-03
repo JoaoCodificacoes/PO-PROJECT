@@ -1,11 +1,25 @@
 package prr.core.communications;
 
-import prr.core.tariff.TariffPlan;
+import prr.core.terminals.Terminal;
 
 public class VoiceCommunication extends InteractiveCommunication {
 
-    protected double computeCost(TariffPlan plan){
-        //FIXME implement
-        return 0;
+    public VoiceCommunication(Terminal from, Terminal to) {
+        super(from, to);
+        from.getOwner().getClientLevel().setVideoCount(0);
+    }
+
+    protected double computeCost() {
+
+        double cost = getFrom().getOwner().getClientLevel().computeVoiceCommCost(getSize());
+        if (getFrom().isFriend(getTo()))
+            cost *= 0.5;
+        setCost(cost);
+        return cost;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString("VOICE");
     }
 }

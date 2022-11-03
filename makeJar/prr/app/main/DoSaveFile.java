@@ -14,22 +14,22 @@ import java.io.IOException;
  * Command to save a file.
  */
 class DoSaveFile extends Command<NetworkManager> {
-  DoSaveFile(NetworkManager receiver) {
-    super(Label.SAVE_FILE, receiver);
-  }
-  
-  @Override
-  protected final void execute() throws CommandException {
-    try {
-      if (_receiver.getFileName() == null)
-        _receiver.saveAs(Form.requestString(Message.newSaveAs()));
-      else
-        _receiver.save();
-    } catch (FileNotFoundException fnfe) {
-      throw new FileOpenFailedException(fnfe);
-    } catch (MissingFileAssociationException | IOException e) {
-      e.printStackTrace();
+    DoSaveFile(NetworkManager receiver) {
+        super(Label.SAVE_FILE, receiver);
     }
-  }
+
+    @Override
+    protected final void execute() throws CommandException {
+        try {
+            if (_receiver.getFileName() == null)
+                _receiver.saveAs(Form.requestString(Message.newSaveAs()));
+            else
+                _receiver.save();
+        } catch (FileNotFoundException fnfe) {
+            throw new FileOpenFailedException(fnfe);
+        } catch (MissingFileAssociationException | IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
 

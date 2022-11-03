@@ -11,14 +11,14 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoShowAllClients extends Command<Network> {
 
-  DoShowAllClients(Network receiver) {
-    super(Label.SHOW_ALL_CLIENTS, receiver);
-  }
+    DoShowAllClients(Network receiver) {
+        super(Label.SHOW_ALL_CLIENTS, receiver);
+    }
 
-  @Override
-  protected final void execute() throws CommandException {
-    for (Client c: _receiver.getClients())
-      _display.addLine(c.toString());
-    _display.display();
-  }
+    @Override
+    protected final void execute() throws CommandException {
+        for (Client c : _receiver.getClients())
+            _display.addLine(c.toString());
+        _display.display();
+    }
 }

@@ -1,16 +1,11 @@
 package prr.core;
 
-import java.io.Reader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.BufferedReader;
-
-import java.util.Collection;
-import java.util.ArrayList;
-
-import prr.core.exception.DuplicateClientKeyException;
 import prr.core.exception.UnrecognizedEntryException;
 import prr.core.terminals.Terminal;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 // import more exception core classes if needed
 
 /*
@@ -41,7 +36,7 @@ public class Parser {
     private void parseLine(String line) throws UnrecognizedEntryException {
         String[] components = line.split("\\|");
 
-        switch(components[0]) {
+        switch (components[0]) {
             case "CLIENT" -> parseClient(components, line);
             case "BASIC", "FANCY" -> parseTerminal(components, line);
             case "FRIENDS" -> parseFriends(components, line);
@@ -74,7 +69,7 @@ public class Parser {
 
         try {
             Terminal terminal = _network.registerTerminal(components[0], components[1], components[2]);
-            switch(components[3]) {
+            switch (components[3]) {
                 case "SILENCE" -> terminal.setOnSilent();
                 case "OFF" -> terminal.turnOff();
                 default -> {

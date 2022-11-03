@@ -13,24 +13,24 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoRegisterTerminal extends Command<Network> {
 
-  DoRegisterTerminal(Network receiver) {
-    super(Label.REGISTER_TERMINAL, receiver);
-    addStringField("id", Message.terminalKey());
-    addOptionField("type", Message.terminalType(),"BASIC","FANCY");
-    addStringField("client", Message.clientKey());
-  }
-
-  @Override
-  protected final void execute() throws CommandException {
-    try {
-      _receiver.registerTerminal(optionField("type"),stringField("id"), stringField("client"));
-
-    } catch (DuplicateTerminalKeyException e) {
-      throw new prr.app.exception.DuplicateTerminalKeyException(e.getKey());
-    } catch (InvalidTerminalKeyException e) {
-      throw new prr.app.exception.InvalidTerminalKeyException(e.getKey());
-    } catch (UnknownClientKeyException e) {
-      throw new prr.app.exception.UnknownClientKeyException(e.getKey());
+    DoRegisterTerminal(Network receiver) {
+        super(Label.REGISTER_TERMINAL, receiver);
+        addStringField("id", Message.terminalKey());
+        addOptionField("type", Message.terminalType(), "BASIC", "FANCY");
+        addStringField("client", Message.clientKey());
     }
-  }
+
+    @Override
+    protected final void execute() throws CommandException {
+        try {
+            _receiver.registerTerminal(optionField("type"), stringField("id"), stringField("client"));
+
+        } catch (DuplicateTerminalKeyException e) {
+            throw new prr.app.exception.DuplicateTerminalKeyException(e.getKey());
+        } catch (InvalidTerminalKeyException e) {
+            throw new prr.app.exception.InvalidTerminalKeyException(e.getKey());
+        } catch (UnknownClientKeyException e) {
+            throw new prr.app.exception.UnknownClientKeyException(e.getKey());
+        }
+    }
 }

@@ -187,7 +187,7 @@ public class Network implements Serializable {
      * @param notisOn  true to set notificationsOn / false to set NotificationsOff
      * @return true if changes were made / false if no changes were made
      */
-    public boolean changeClientNotificationState(String clientId, boolean notisOn) throws UnknownClientKeyException {
+    public boolean setClientNotificationPreference(String clientId, boolean notisOn) throws UnknownClientKeyException {
         return getClient(clientId).changeNotificationState(notisOn);
     }
 

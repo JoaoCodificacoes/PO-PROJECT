@@ -4,7 +4,7 @@ import prr.core.clients.Client.ClientLevel;
 import prr.core.terminals.Terminal;
 
 public class TextCommunication extends Communication {
-    private String _message;
+    private final String _message;
 
     public TextCommunication(String message, Terminal from, Terminal to) {
         super(from, to);
@@ -16,8 +16,6 @@ public class TextCommunication extends Communication {
 
     protected double computeCost() {
         double cost = getFrom().getOwner().getClientLevel().computeTextCommCost(getSize());
-        if (getFrom().isFriend(getTo()))
-            cost *= 0.5;
         setCost(cost);
         return cost;
     }

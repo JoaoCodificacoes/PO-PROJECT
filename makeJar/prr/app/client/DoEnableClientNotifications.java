@@ -10,19 +10,19 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoEnableClientNotifications extends Command<Network> {
 
-  DoEnableClientNotifications(Network receiver) {
-    super(Label.ENABLE_CLIENT_NOTIFICATIONS, receiver);
-    addStringField("clientID",Message.key());
-  }
-  
-  @Override
-  protected final void execute() throws CommandException {
-    boolean notisOn = true;
-    try {
-      if (!_receiver.ChangeClientNotificationState(stringField("clientID"), notisOn))
-        _display.popup(Message.clientNotificationsAlreadyEnabled());
-    } catch (UnknownClientKeyException ucke) {
-      throw new prr.app.exception.UnknownClientKeyException(ucke.getKey());
+    DoEnableClientNotifications(Network receiver) {
+        super(Label.ENABLE_CLIENT_NOTIFICATIONS, receiver);
+        addStringField("clientID", Message.key());
     }
-  }
+
+    @Override
+    protected final void execute() throws CommandException {
+        boolean notisOn = true;
+        try {
+            if (!_receiver.changeClientNotificationState(stringField("clientID"), notisOn))
+                _display.popup(Message.clientNotificationsAlreadyEnabled());
+        } catch (UnknownClientKeyException ucke) {
+            throw new prr.app.exception.UnknownClientKeyException(ucke.getKey());
+        }
+    }
 }

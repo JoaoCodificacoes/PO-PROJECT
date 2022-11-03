@@ -2,7 +2,12 @@ package prr.core.terminals;
 
 
 import prr.core.clients.Client;
-import prr.core.communications.Communication;
+import prr.core.communications.*;
+import prr.core.exception.*;
+import prr.core.notification.Notification;
+import prr.core.notification.NotificationType;
+import prr.core.notification.Observable;
+import prr.core.notification.Observer;
 
 import java.io.Serializable;
 import java.util.*;
@@ -19,10 +24,14 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
     private double _debt;
     private double _payments;
     private TerminalMode _mode;
+    private TerminalMode previousMode;
     private Map<String, Terminal> _friends;
-    private List<Client> _toNotify;
-    private Map<String,Communication> _madeCommunications;
-    private Map<String ,Communication> _receivedCommunications;
+    private Set<Observer> _toNotify;
+    private Map<Integer, Communication> _madeCommunications;
+    private Map<Integer, Communication> _receivedCommunications;
+
+
+    private InteractiveCommunication _ongoingCommunication;
 
     private boolean _new;
 
@@ -33,15 +42,91 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
     private static final long serialVersionUID = 202208091753L;
 
 
+    public abstract class TerminalMode implements Observable, Serializable {
+        private String _notificationType;
+
+        /* if terminal mode is the same that is asked for return false
+           if terminal mode is changed or can't be changed return true
+           by default all set to true, can be overriden in child class
+         */
+        public boolean toOff() {return true;}
+
+        public boolean toIdle() {
+            return true;
+        }
+
+        public boolean toBusy() {
+            return true;
+        }
+
+        public boolean toSilence() {
+            return true;
+        }
+
+        public boolean canEndComm() {
+            return false;
+        }
+        public void toPrevious(){}
+
+        public boolean canStartComm() {
+            return true;
+        }
+
+        public void getText(Client from) throws DestinationOffException {
+        }
+
+        public abstract void getCall(Client from) throws DestinationOffException,
+                DestinationSilentException, DestinationBusyException;
+
+        public void setMode(TerminalMode mode) {
+            _mode = mode;
+        }
+
+        public Terminal getTerminal() {
+            return Terminal.this;
+        }
+
+        public void attach(Observer o) {
+            if ( o.wantsSubject())
+                _toNotify.add(o);
+        }
+
+        public void dettach(Observer o) {
+            _toNotify.remove(o);
+        }
+
+
+        public void notifyObservers() {
+            Terminal fromTerminal = getTerminal();
+            for (Observer o : _toNotify) {
+                Notification noti = new Notification(_notificationType, fromTerminal);
+                o.update(noti);
+            }
+            _toNotify.clear();
+        }
+
+        public TerminalMode getPreviousMode() {
+            return previousMode;
+        }
+
+        public void setPreviousMode(TerminalMode mode) {
+            previousMode = mode;
+        }
+
+        public void setNotificationType(String notificationType) {
+            _notificationType = notificationType;
+        }
+    }
+
     public Terminal(String id, Client c) {
         _id = id;
         _owner = c;
-        _mode = TerminalMode.IDLE;
         _friends = new TreeMap<>();
-        _toNotify = new ArrayList<>();
+        _toNotify = new HashSet<>();
         _madeCommunications = new TreeMap<>();
         _receivedCommunications = new TreeMap<>();
         _new = true;
+        _mode = new IdleMode(this);
     }
 
 
@@ -52,7 +137,7 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
      * it was the originator of this communication.
      **/
     public boolean canEndCurrentCommunication() {
-        return _mode.equals(TerminalMode.BUSY);
+        return _mode.canEndComm() && _ongoingCommunication != null && _ongoingCommunication.getFrom().equals(this);
     }
 
     /**
@@ -61,47 +146,78 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
      * @return true if this terminal is neither off neither busy, false otherwise.
      **/
     public boolean canStartCommunication() {
-        return !(_mode.equals(TerminalMode.OFF) || _mode.equals(TerminalMode.BUSY));
+        return _mode.canStartComm();
     }
 
     public boolean setOnSilent() {
-        _mode = TerminalMode.SILENCE;
-        return true;
+
+        return _mode.toSilence();
     }
 
     public boolean turnOff() {
-        _mode = TerminalMode.OFF;
-        return true;
+        return _mode.toOff();
     }
 
     public boolean setOnIdle() {
-        _mode = TerminalMode.IDLE;
-        return true;
+        return _mode.toIdle();
     }
 
-    public void endOngoingCommunication(int size) {
-        //FIXME implement
+    public double endOngoingCommunication(int size) {
+        _ongoingCommunication.setDuration(size);
+        _ongoingCommunication.stopComm();
+        double cost = _ongoingCommunication.getCost();
+        _debt += _ongoingCommunication.getCost();
+        _madeCommunications.put(_ongoingCommunication.getId(), _ongoingCommunication);
+        _owner.getClientLevel().checkClientLevelComm();
+        Terminal to = _ongoingCommunication.getTo();
+        to.setOngoingComm(null);
+        _ongoingCommunication = null;
+        to.setOnPrevious();
+        setOnPrevious();
+        return cost;
     }
 
-    public void makeVoiceCall(Terminal to) {
-        //FIXME implement
+    public void setOnPrevious(){_mode.toPrevious();}
+
+    public VoiceCommunication makeVoiceCall(Terminal to) throws DestinationOffException,
+            DestinationSilentException, DestinationBusyException {
+
+        to.acceptVoiceCall(this);
+        VoiceCommunication c = new VoiceCommunication(this, to);
+        to.addReceivedComm(c);
+        addMadeComm(c);
+        to.setOngoingComm(c);
+        setOngoingComm(c);
+        _mode.toBusy();
+        return c;
     }
 
-    protected void acceptVoiceCall(Terminal from) {
-        //FIXME implement
+    protected void acceptVoiceCall(Terminal from) throws DestinationOffException,
+            DestinationSilentException, DestinationBusyException {
+        _mode.getCall(from.getOwner());
+        _mode.toBusy();
     }
 
-    public void makeSMS(Terminal to, String message) {
-        //FIXME implement
+    public TextCommunication makeSMS(Terminal to, String message) throws DestinationOffException {
+        to.acceptSMS(this);
+        TextCommunication c = new TextCommunication(message, this, to);
+        c.stopComm();
+        to.addReceivedComm(c);
+        addMadeComm(c);
+        addDebt(c.getCost());
+        return c;
     }
 
-    protected void acceptSMS(Terminal from) {
-        //FIXME implement
+    protected void acceptSMS(Terminal from) throws DestinationOffException {
+        _mode.getText(from.getOwner());
     }
 
-    protected abstract void makeVideoCall(Terminal to);
+    public abstract VideoCommunication makeVideoCall(Terminal to) throws UnsupportedAtOriginException,
+            DestinationSilentException, DestinationOffException,
+            DestinationBusyException, UnsupportedAtDestinationException;
 
-    protected abstract void acceptVideoCall(Terminal to);
+    protected abstract void acceptVideoCall(Terminal to) throws UnsupportedAtDestinationException,
+            DestinationBusyException, DestinationOffException, DestinationSilentException;
 
     public String getId() {
         return _id;
@@ -116,7 +232,7 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
         return _friends.values();
     }
 
-    public TerminalMode getTerminalStatus() {
+    public TerminalMode getTerminalMode() {
         return _mode;
     }
 
@@ -129,12 +245,22 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
         return _payments;
     }
 
-    public Collection<Communication> getMadeCommunications() {
-        return _madeCommunications.values();
+    public double getBalance(){return _payments-_debt;}
+
+    public void addDebt(double debt) {
+        _debt += debt;
     }
 
-    public Collection<Communication> getReceivedCommunications() {
-        return _receivedCommunications.values();
+    public boolean payComm(int commId) {
+        Communication comm = _madeCommunications.get(commId);
+        if (comm == null || comm.isOngoing() || comm.isPaid())
+            return false;
+        double cost = comm.getCost();
+        _debt -= cost;
+        _payments += cost;
+        comm.setIsPaid(true);
+        _owner.getClientLevel().checkClientLevelPayment();
+        return true;
     }
 
     public boolean isNew() {
@@ -145,6 +271,13 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
         _new = false;
     }
 
+    public void addMadeComm(Communication c) {
+        _madeCommunications.put(c.getId(), c);
+    }
+
+    public void addReceivedComm(Communication c) {
+        _receivedCommunications.put(c.getId(), c);
+    }
 
     public void addFriend(Terminal friend) {
         _friends.putIfAbsent(friend.getId(), friend);
@@ -152,6 +285,14 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
 
     public void removeFriend(String friend) {
         _friends.remove(friend);
+    }
+
+    public boolean isFriend(Terminal terminal) {
+        return _friends.containsKey(terminal.getId());
+    }
+
+    public InteractiveCommunication getOngoingCommunication() {
+        return _ongoingCommunication;
     }
 
     public String getFriendsString() {
@@ -165,14 +306,27 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
 
     }
 
+
+    public void setOngoingComm(InteractiveCommunication c) {
+        _ongoingCommunication = c;
+    }
+
     public String toString(String type) {
 
         return "%s|%s|%s|%s|%d|%d%s".formatted(type,
                 getId(),
                 getOwner().getClientKey(),
-                getTerminalStatus(),
+                getTerminalMode(),
                 Math.round(getBalancePayments()),
                 Math.round(getBalanceDebt()),
                 getFriendsString());
+    }
+
+    public Collection<Communication> getMadeCommunications(){
+        return _madeCommunications.values();
+    }
+
+    public Collection<Communication> getReceivedCommunications(){
+        return _receivedCommunications.values();
     }
 }

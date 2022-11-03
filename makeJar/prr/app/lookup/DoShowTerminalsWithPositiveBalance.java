@@ -10,16 +10,16 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoShowTerminalsWithPositiveBalance extends Command<Network> {
 
-  DoShowTerminalsWithPositiveBalance(Network receiver) {
-    super(Label.SHOW_TERMINALS_WITH_POSITIVE_BALANCE, receiver);
-  }
+    DoShowTerminalsWithPositiveBalance(Network receiver) {
+        super(Label.SHOW_TERMINALS_WITH_POSITIVE_BALANCE, receiver);
+    }
 
-  @Override
-  protected final void execute() throws CommandException {
-    for (Terminal terminal : _receiver.getTerminals())
-      if (terminal.getBalanceDebt() < terminal.getBalancePayments())
-        _display.addLine(terminal);
-    _display.display();
+    @Override
+    protected final void execute() throws CommandException {
+        for (Terminal terminal : _receiver.getTerminals())
+            if (terminal.getBalance() > 0)
+                _display.addLine(terminal);
+        _display.display();
 
-  }
+    }
 }

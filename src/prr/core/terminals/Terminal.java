@@ -5,9 +5,8 @@ import prr.core.clients.Client;
 import prr.core.communications.*;
 import prr.core.exception.*;
 import prr.core.notification.Notification;
-import prr.core.notification.NotificationType;
-import prr.core.notification.Observable;
-import prr.core.notification.Observer;
+import prr.core.notification.Notificator;
+import prr.core.notification.Notifiable;
 
 import java.io.Serializable;
 import java.util.*;
@@ -26,7 +25,7 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
     private TerminalMode _mode;
     private TerminalMode previousMode;
     private Map<String, Terminal> _friends;
-    private Set<Observer> _toNotify;
+    private Set<Notifiable> _toNotify;
     private Map<Integer, Communication> _madeCommunications;
     private Map<Integer, Communication> _receivedCommunications;
 
@@ -42,7 +41,7 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
     private static final long serialVersionUID = 202208091753L;
 
 
-    public abstract class TerminalMode implements Observable, Serializable {
+    public abstract class TerminalMode implements Notificator, Serializable {
         private String _notificationType;
 
         /* if terminal mode is the same that is asked for return false
@@ -86,17 +85,17 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
             return Terminal.this;
         }
 
-        public void attach(Observer o) {
-            if ( o.wantsSubject())
+        public void attach(Notifiable o) {
+            if ( o.wantsNotifications())
                 _toNotify.add(o);
         }
 
 
-        public void notifyObservers() {
+        public void sendNotifications() {
             Terminal fromTerminal = getTerminal();
-            for (Observer o : _toNotify) {
+            for (Notifiable o : _toNotify) {
                 Notification noti = new Notification(_notificationType, fromTerminal);
-                o.update(noti);
+                o.getNotification(noti);
             }
             _toNotify.clear();
         }

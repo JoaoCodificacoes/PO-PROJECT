@@ -3,20 +3,20 @@ package prr.app.terminal;
 import prr.core.Network;
 import prr.core.terminals.Terminal;
 import pt.tecnico.uilib.menus.CommandException;
-// Add more imports if needed
 
 /**
  * Perform payment.
  */
 class DoPerformPayment extends TerminalCommand {
 
-  DoPerformPayment(Network context, Terminal terminal) {
-    super(Label.PERFORM_PAYMENT, context, terminal);
-    addIntegerField("commKey",Message.commKey());
-  }
-  
-  @Override
-  protected final void execute() throws CommandException {
-    //FIXME implement command
-  }
+    DoPerformPayment(Network context, Terminal terminal) {
+        super(Label.PERFORM_PAYMENT, context, terminal);
+        addIntegerField("commKey", Message.commKey());
+    }
+
+    @Override
+    protected final void execute() throws CommandException {
+        if (!_receiver.payComm(integerField("commKey")))
+            _display.popup(Message.invalidCommunication());
+    }
 }

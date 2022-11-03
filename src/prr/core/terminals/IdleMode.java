@@ -14,7 +14,7 @@ public class IdleMode extends TerminalMode {
         String notiType = NotificationType.makeValidNotificationType(getPreviousMode(),toString());
         if ( notiType != null) {
             setNotificationType(notiType);
-            notifyObservers();
+            sendNotifications();
         }
     }
 

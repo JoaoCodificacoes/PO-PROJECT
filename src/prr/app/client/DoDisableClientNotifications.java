@@ -20,7 +20,7 @@ class DoDisableClientNotifications extends Command<Network> {
     protected final void execute() throws CommandException {
         boolean notisOn = false;
         try {
-            if (!_receiver.changeClientNotificationState(stringField("clientID"), notisOn))
+            if (!_receiver.setClientNotificationPreference(stringField("clientID"), notisOn))
                 _display.popup(Message.clientNotificationsAlreadyDisabled());
         } catch (UnknownClientKeyException ucke) {
             throw new UnknownTerminalKeyException(ucke.getKey());

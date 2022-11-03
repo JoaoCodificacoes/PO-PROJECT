@@ -1,31 +1,35 @@
 package prr.core.clients;
 
 import prr.core.communications.Communication;
+import prr.core.notification.DefaultDelivery;
 import prr.core.notification.Notification;
-import prr.core.notification.Observer;
+import prr.core.notification.NotificationDelivery;
+import prr.core.notification.Notifiable;
 import prr.core.terminals.Terminal;
 
 import java.io.Serializable;
 import java.util.*;
 
-public class Client implements Serializable, Observer {
+public class Client implements Serializable, Notifiable {
     private final String _key;
     private final String _name;
     private final int _taxNumber;
     private ClientLevel _level;
     private boolean _receiveNotifications;
+    private NotificationDelivery _deliveryMethod;
 
-    private Queue<Notification> _notifications;
-    private List<Terminal> _terminals;//List
+
+    private List<Terminal> _terminals;
     /**
      * Serial number for serialization.
      */
     private static final long serialVersionUID = 202208091753L;
 
 
+
+
     public abstract class ClientLevel implements Serializable {
 
-        private static int COMMS_NEEDED = 5;
         private int _textCount;
         private int _videoCount;
 
@@ -72,13 +76,16 @@ public class Client implements Serializable, Observer {
         _level = new NormalLevel(this);
         _receiveNotifications = true;
         _terminals = new ArrayList<>();
-        _notifications = new LinkedList<>();
+        _deliveryMethod = new DefaultDelivery();
     }
 
     public String getClientKey() {
         return _key;
     }
 
+    public void setDeliveryMethod(NotificationDelivery deliveryMethod) {
+        _deliveryMethod = deliveryMethod;
+    }
 
     public double getClientPaymentBalance() {
         double sum = 0;
@@ -137,7 +144,7 @@ public class Client implements Serializable, Observer {
     }
 
     @Override
-    public void update(Notification noti) {
-        _notifications.add(noti);
+    public void getNotification(Notification noti) {
+        _deliveryMethod.deliver(noti);
     }
 }
