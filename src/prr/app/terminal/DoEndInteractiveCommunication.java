@@ -4,7 +4,6 @@ import prr.core.Network;
 import prr.core.communications.InteractiveCommunication;
 import prr.core.terminals.Terminal;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Command for ending communication.

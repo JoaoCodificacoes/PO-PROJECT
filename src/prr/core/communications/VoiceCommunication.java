@@ -6,6 +6,7 @@ public class VoiceCommunication extends InteractiveCommunication {
 
     public VoiceCommunication(Terminal from, Terminal to) {
         super(from, to);
+        from.getOwner().getClientLevel().setVideoCount(0);
     }
 
     protected double computeCost() {

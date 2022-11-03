@@ -4,8 +4,10 @@ package prr.core.terminals;
 import prr.core.clients.Client;
 import prr.core.communications.*;
 import prr.core.exception.*;
+import prr.core.notification.Notification;
+import prr.core.notification.NotificationType;
+import prr.core.notification.Observable;
 import prr.core.notification.Observer;
-import prr.core.notification.*;
 
 import java.io.Serializable;
 import java.util.*;
@@ -22,6 +24,7 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
     private double _debt;
     private double _payments;
     private TerminalMode _mode;
+    private TerminalMode previousMode;
     private Map<String, Terminal> _friends;
     private Set<Observer> _toNotify;
     private Map<Integer, Communication> _madeCommunications;
@@ -39,17 +42,14 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
     private static final long serialVersionUID = 202208091753L;
 
 
-    public abstract class TerminalMode implements Subject , Serializable {
-
-        private NotificationType _newNotificationType = new O2iNotification();
+    public abstract class TerminalMode implements Observable, Serializable {
+        private String _notificationType;
 
         /* if terminal mode is the same that is asked for return false
            if terminal mode is changed or can't be changed return true
            by default all set to true, can be overriden in child class
          */
-        public boolean toOff() {
-            return true;
-        }
+        public boolean toOff() {return true;}
 
         public boolean toIdle() {
             return true;
@@ -66,15 +66,16 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
         public boolean canEndComm() {
             return false;
         }
+        public void toPrevious(){}
 
         public boolean canStartComm() {
             return true;
         }
 
-        public void getText() throws DestinationOffException {
+        public void getText(Client from) throws DestinationOffException {
         }
 
-        public abstract void getCall() throws DestinationOffException,
+        public abstract void getCall(Client from) throws DestinationOffException,
                 DestinationSilentException, DestinationBusyException;
 
         public void setMode(TerminalMode mode) {
@@ -86,31 +87,31 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
         }
 
         public void attach(Observer o) {
-            _toNotify.add(o);
+            if ( o.wantsSubject())
+                _toNotify.add(o);
         }
 
-        public void dettach(Observer o) {
-            _toNotify.remove(o);
-        }
 
-        public void notify(NotificationType notiType) {
+        public void notifyObservers() {
             Terminal fromTerminal = getTerminal();
-            Notification noti;
             for (Observer o : _toNotify) {
-                noti = new Notification(notiType, fromTerminal);
+                Notification noti = new Notification(_notificationType, fromTerminal);
                 o.update(noti);
             }
             _toNotify.clear();
         }
 
-        public NotificationType getNewNotificationType() {
-            return _newNotificationType;
+        public TerminalMode getPreviousMode() {
+            return previousMode;
         }
 
-        public void setNewNotificationType(NotificationType newNotificationType) {
-            _newNotificationType = newNotificationType;
+        public void setPreviousMode(TerminalMode mode) {
+            previousMode = mode;
         }
 
+        public void setNotificationType(String notificationType) {
+            _notificationType = notificationType;
+        }
     }
 
     public Terminal(String id, Client c) {
@@ -164,12 +165,15 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
         _debt += _ongoingCommunication.getCost();
         _madeCommunications.put(_ongoingCommunication.getId(), _ongoingCommunication);
         _owner.getClientLevel().checkClientLevelComm();
-
-        _ongoingCommunication.getTo().setOngoingComm(null);
+        Terminal to = _ongoingCommunication.getTo();
+        to.setOngoingComm(null);
         _ongoingCommunication = null;
-        setOnIdle();
+        to.setOnPrevious();
+        setOnPrevious();
         return cost;
     }
+
+    public void setOnPrevious(){_mode.toPrevious();}
 
     public VoiceCommunication makeVoiceCall(Terminal to) throws DestinationOffException,
             DestinationSilentException, DestinationBusyException {
@@ -186,22 +190,23 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
 
     protected void acceptVoiceCall(Terminal from) throws DestinationOffException,
             DestinationSilentException, DestinationBusyException {
-        _mode.getCall();
+        _mode.getCall(from.getOwner());
         _mode.toBusy();
     }
 
     public TextCommunication makeSMS(Terminal to, String message) throws DestinationOffException {
         to.acceptSMS(this);
-        TextCommunication c = new TextCommunication(message, this, to);
-        c.stopComm();
-        to.addReceivedComm(c);
-        addMadeComm(c);
-        addDebt(c.getCost());
-        return c;
+        TextCommunication communication = new TextCommunication(message, this, to);
+        communication.stopComm();
+        to.addReceivedComm(communication);
+        addMadeComm(communication);
+        addDebt(communication.getCost());
+        getOwner().getClientLevel().checkClientLevelComm();
+        return communication;
     }
 
     protected void acceptSMS(Terminal from) throws DestinationOffException {
-        _mode.getText();
+        _mode.getText(from.getOwner());
     }
 
     public abstract VideoCommunication makeVideoCall(Terminal to) throws UnsupportedAtOriginException,

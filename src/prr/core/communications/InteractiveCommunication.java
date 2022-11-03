@@ -8,6 +8,7 @@ public abstract class InteractiveCommunication extends Communication {
     public InteractiveCommunication(Terminal from, Terminal to) {
         super(from, to);
         startComm();
+        from.getOwner().getClientLevel().setTextCount(0);
     }
 
     protected int getSize() {

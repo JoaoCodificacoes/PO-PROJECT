@@ -4,10 +4,10 @@ package prr.core.notification;
 import prr.core.terminals.Terminal;
 
 public class Notification {
-    private NotificationType _type;
+    private final String _type;
     private Terminal _notifyingTerminal;
 
-    public Notification(NotificationType type, Terminal notifyingTerminal) {
+    public Notification(String type, Terminal notifyingTerminal) {
         _type = type;
         _notifyingTerminal = notifyingTerminal;
     }
@@ -15,6 +15,6 @@ public class Notification {
 
     @Override
     public String toString() {
-        return _type.toString() + "|" + _notifyingTerminal.getId();
+        return _type + "|" + _notifyingTerminal.getId();
     }
 }

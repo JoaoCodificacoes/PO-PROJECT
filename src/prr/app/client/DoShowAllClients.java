@@ -2,7 +2,6 @@ package prr.app.client;
 
 import prr.core.Network;
 import prr.core.clients.Client;
-import prr.core.notification.Notification;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
 

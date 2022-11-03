@@ -31,12 +31,12 @@ public class NormalLevel extends ClientLevel {
 
     @Override
     public double computeVideoCommCost(int n) {
-        return 30;
+        return 30*n;
     }
 
     @Override
     public double computeVoiceCommCost(int n) {
-        return 20;
+        return 20*n;
     }
 
     @Override

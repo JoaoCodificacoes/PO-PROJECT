@@ -156,7 +156,7 @@ public class Network implements Serializable {
      */
     public void sendTextCommunication(Terminal from, String toKey, String msg) throws UnknownTerminalKeyException, DestinationOffException {
         Terminal to = getTerminal(toKey);
-        TextCommunication comm = to.makeSMS(to,msg);
+        TextCommunication comm = from.makeSMS(to,msg);
         _communications.put(comm.getId(),comm);
         from.useTerminal();
         to.useTerminal();

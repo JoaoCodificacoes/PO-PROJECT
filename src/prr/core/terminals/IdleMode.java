@@ -1,9 +1,8 @@
 package prr.core.terminals;
 
 
-import prr.core.exception.DestinationBusyException;
-import prr.core.exception.DestinationOffException;
-import prr.core.exception.DestinationSilentException;
+import prr.core.clients.Client;
+import prr.core.notification.NotificationType;
 import prr.core.terminals.Terminal.TerminalMode;
 
 public class IdleMode extends TerminalMode {
@@ -12,10 +11,16 @@ public class IdleMode extends TerminalMode {
 
     public IdleMode(Terminal terminal) {
         terminal.super();
+        String notiType = NotificationType.makeValidNotificationType(getPreviousMode(),toString());
+        if ( notiType != null) {
+            setNotificationType(notiType);
+            notifyObservers();
+        }
     }
 
     @Override
     public boolean toOff() {
+        setPreviousMode(new IdleMode(getTerminal()));
         setMode(new OffMode(getTerminal()));
         return true;
     }
@@ -27,18 +32,21 @@ public class IdleMode extends TerminalMode {
 
     @Override
     public boolean toBusy() {
+        setPreviousMode(new IdleMode(getTerminal()));
         setMode(new BusyMode(getTerminal()));
         return true;
     }
 
     @Override
     public boolean toSilence() {
+        setPreviousMode(new IdleMode(getTerminal()));
         setMode(new SilenceMode(getTerminal()));
         return true;
     }
 
     @Override
-    public void getCall() throws DestinationOffException, DestinationSilentException, DestinationBusyException {}
+    public void getCall(Client from) {
+    }
 
     @Override
     public String toString() {

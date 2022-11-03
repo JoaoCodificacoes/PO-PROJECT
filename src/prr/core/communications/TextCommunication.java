@@ -11,6 +11,7 @@ public class TextCommunication extends Communication {
         _message = message;
         ClientLevel clientLevel = from.getOwner().getClientLevel();
         clientLevel.setTextCount(clientLevel.getTextCount()+1);
+        clientLevel.setVideoCount(0);
     }
 
     protected double computeCost() {

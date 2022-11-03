@@ -2,7 +2,6 @@ package prr.core.terminals;
 
 
 import prr.core.clients.Client;
-import prr.core.communications.Communication;
 import prr.core.communications.VideoCommunication;
 import prr.core.exception.DestinationBusyException;
 import prr.core.exception.DestinationOffException;
@@ -27,14 +26,14 @@ public class FancyTerminal extends Terminal {
         addMadeComm(comm);
         to.addReceivedComm(comm);
         addDebt(comm.getCost());
-        to.addDebt(comm.getCost());
         getTerminalMode().toBusy();
-        to.getTerminalMode().toBusy();
+        setOngoingComm(comm);
         return comm;
     }
 
     protected void acceptVideoCall(Terminal from) throws DestinationBusyException, DestinationOffException,
             DestinationSilentException {
-        getTerminalMode().getCall();
+        getTerminalMode().getCall(from.getOwner());
+        getTerminalMode().toBusy();
     }
 }

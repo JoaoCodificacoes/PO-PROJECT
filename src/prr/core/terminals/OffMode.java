@@ -1,9 +1,7 @@
 package prr.core.terminals;
 
+import prr.core.clients.Client;
 import prr.core.exception.DestinationOffException;
-import prr.core.exception.DestinationSilentException;
-import prr.core.notification.O2iNotification;
-import prr.core.notification.O2sNotification;
 import prr.core.terminals.Terminal.TerminalMode;
 
 public class OffMode extends TerminalMode {
@@ -21,17 +19,15 @@ public class OffMode extends TerminalMode {
     @Override
     public boolean toIdle() {
         //can go to idle
+        setPreviousMode(new OffMode(getTerminal()));
         setMode(new IdleMode(getTerminal()));
-        setNewNotificationType(new O2iNotification());
-        notify(getNewNotificationType());
         return true;
     }
 
     @Override
     public boolean toSilence() {
+        setPreviousMode(new OffMode(getTerminal()));
         setMode(new SilenceMode(getTerminal()));
-        setNewNotificationType(new O2sNotification());
-        notify(getNewNotificationType());
         return true;
     }
 
@@ -40,10 +36,12 @@ public class OffMode extends TerminalMode {
         return false;
     }
     @Override
-    public void getText() throws DestinationOffException {
+    public void getText(Client from) throws DestinationOffException {
+        attach(from);
         throw new DestinationOffException(getTerminal().getId());
     }
-    public void getCall() throws DestinationOffException{
+    public void getCall(Client from) throws DestinationOffException{
+        attach(from);
         throw new DestinationOffException(getTerminal().getId());
     }
     @Override

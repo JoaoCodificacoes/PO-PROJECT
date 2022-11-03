@@ -30,12 +30,12 @@ public class PlatinumLevel extends ClientLevel {
 
     @Override
     public double computeVideoCommCost(int n) {
-        return 10;
+        return 10*n;
     }
 
     @Override
     public double computeVoiceCommCost(int n) {
-        return 10;
+        return 10*n;
     }
 
 

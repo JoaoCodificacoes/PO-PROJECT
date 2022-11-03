@@ -22,20 +22,20 @@ public class GoldLevel extends ClientLevel {
 
     @Override
     public double computeTextCommCost(int n) {
-        if (n>=100)
-            return 2*n;
+        if (n >= 100)
+            return 2 * n;
         else
             return 10;
     }
 
     @Override
     public double computeVideoCommCost(int n) {
-        return 20;
+        return 20 * n;
     }
 
     @Override
     public double computeVoiceCommCost(int n) {
-        return 10;
+        return 10 * n;
     }
 
     @Override
