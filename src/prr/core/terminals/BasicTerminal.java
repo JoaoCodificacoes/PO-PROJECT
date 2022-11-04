@@ -17,7 +17,7 @@ public class BasicTerminal extends Terminal {
         return super.toString("BASIC");
     }
 
-    public VideoCommunication makeVideoCall(Terminal to) throws UnsupportedAtOriginException{
+    public VideoCommunication makeVideoCall(Terminal to) throws UnsupportedAtOriginException {
         throw new UnsupportedAtOriginException(getId());
     }
 

@@ -6,7 +6,6 @@ import prr.core.terminals.Terminal;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-// import more exception core classes if needed
 
 /*
  * A concretização desta classe depende da funcionalidade suportada pelas entidades do core:

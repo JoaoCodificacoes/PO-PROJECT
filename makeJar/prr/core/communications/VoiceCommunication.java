@@ -6,16 +6,12 @@ public class VoiceCommunication extends InteractiveCommunication {
 
     public VoiceCommunication(Terminal from, Terminal to) {
         super(from, to);
-        from.getOwner().getClientLevel().setVideoCount(0);
     }
 
-    protected double computeCost() {
+    protected void computeCost() {
 
-        double cost = getFrom().getOwner().getClientLevel().computeVoiceCommCost(getSize());
-        if (getFrom().isFriend(getTo()))
-            cost *= 0.5;
+        double cost = getFrom().getOwner().computeVoiceCommCost(getSize()) * isFriendModifier();
         setCost(cost);
-        return cost;
     }
 
     @Override

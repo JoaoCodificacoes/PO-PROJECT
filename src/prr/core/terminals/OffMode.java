@@ -1,10 +1,11 @@
 package prr.core.terminals;
 
 import prr.core.clients.Client;
+import prr.core.exception.AlreadyInModeException;
 import prr.core.exception.DestinationOffException;
 import prr.core.terminals.Terminal.TerminalMode;
 
-public class OffMode extends TerminalMode {
+class OffMode extends TerminalMode {
 
     //Off mode can only go to Idle
     public OffMode(Terminal terminal) {
@@ -12,38 +13,40 @@ public class OffMode extends TerminalMode {
     }
 
     @Override
-    public boolean toOff() {
-        return false;
+    public void toOff() throws AlreadyInModeException {
+        throw new AlreadyInModeException();
     }
 
     @Override
-    public boolean toIdle() {
+    public void toIdle() {
         //can go to idle
         setPreviousMode(new OffMode(getTerminal()));
         setMode(new IdleMode(getTerminal()));
-        return true;
     }
 
     @Override
-    public boolean toSilence() {
+    public void toSilence() {
         setPreviousMode(new OffMode(getTerminal()));
         setMode(new SilenceMode(getTerminal()));
-        return true;
     }
 
     @Override
     public boolean canStartComm() {
         return false;
     }
+
     @Override
     public void getText(Client from) throws DestinationOffException {
         attach(from);
         throw new DestinationOffException(getTerminal().getId());
     }
-    public void getCall(Client from) throws DestinationOffException{
-        attach(from);
+
+    public void getCall(Terminal from) throws DestinationOffException {
+        attach(from.getOwner());
+        from.getTerminalMode().toPrevious();
         throw new DestinationOffException(getTerminal().getId());
     }
+
     @Override
     public String toString() {
         return "OFF";

@@ -1,9 +1,10 @@
 package prr.app.terminal;
 
 import prr.core.Network;
+import prr.core.exception.AlreadyInModeException;
 import prr.core.terminals.Terminal;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
+
 
 /**
  * Turn off the terminal.
@@ -16,7 +17,10 @@ class DoTurnOffTerminal extends TerminalCommand {
 
     @Override
     protected final void execute() throws CommandException {
-        if (!_receiver.turnOff())
+        try {
+            _receiver.turnOff();
+        } catch (AlreadyInModeException aime) {
             _display.popup(Message.alreadyOff());
+        }
     }
 }

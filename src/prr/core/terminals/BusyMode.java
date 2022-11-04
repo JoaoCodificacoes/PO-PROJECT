@@ -1,10 +1,9 @@
 package prr.core.terminals;
 
-import prr.core.clients.Client;
 import prr.core.exception.DestinationBusyException;
 import prr.core.terminals.Terminal.TerminalMode;
 
-public class BusyMode extends TerminalMode {
+class BusyMode extends TerminalMode {
 
     //Busy mode can go to Idle(end of Communication),Silence(end of Communication)
 
@@ -12,24 +11,6 @@ public class BusyMode extends TerminalMode {
         terminal.super();
     }
 
-    @Override
-    public boolean toIdle() {
-        setPreviousMode(new BusyMode(getTerminal()));
-        setMode(new IdleMode(getTerminal()));
-        return true;
-    }
-
-    @Override
-    public boolean toBusy() {
-        return false;
-    }
-
-    @Override
-    public boolean toSilence() {
-        setPreviousMode(new BusyMode(getTerminal()));
-        setMode(new SilenceMode(getTerminal()));
-        return true;
-    }
 
     @Override
     public boolean canStartComm() {
@@ -37,8 +18,9 @@ public class BusyMode extends TerminalMode {
     }
 
     @Override
-    public void getCall(Client from) throws DestinationBusyException {
-        attach(from);
+    public void getCall(Terminal from) throws DestinationBusyException {
+        attach(from.getOwner());
+        from.getTerminalMode().toPrevious();
         throw new DestinationBusyException(getTerminal().getId());
     }
 
@@ -53,7 +35,22 @@ public class BusyMode extends TerminalMode {
     }
 
     @Override
-    public void toPrevious(){
+    public void toOff() {
+
+    }
+
+    @Override
+    public void toIdle() {
+
+    }
+
+    @Override
+    public void toSilence() {
+
+    }
+
+    @Override
+    public void toPrevious() {
         TerminalMode mode = getPreviousMode();
         setPreviousMode(new BusyMode(getTerminal()));
         setMode(mode);

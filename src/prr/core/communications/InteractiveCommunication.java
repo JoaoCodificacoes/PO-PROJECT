@@ -8,7 +8,6 @@ public abstract class InteractiveCommunication extends Communication {
     public InteractiveCommunication(Terminal from, Terminal to) {
         super(from, to);
         startComm();
-        from.getOwner().getClientLevel().setTextCount(0);
     }
 
     protected int getSize() {
@@ -18,6 +17,28 @@ public abstract class InteractiveCommunication extends Communication {
 
     public void setDuration(int duration) {
         _duration = duration;
+    }
+
+    /**
+     * @return discount or not if terminal is friend
+     */
+    public double isFriendModifier() {
+        if (getFrom().isFriend(getTo()))
+            return 0.5;
+        return 1;
+    }
+
+    /**
+     * finish the interactive communication
+     */
+    public void finishInteractiveComm() {
+        finishComm();
+        getTo().setOngoingComm(null);
+        getFrom().setOngoingComm(null);
+        getTo().setOnPrevious();
+        getFrom().setOnPrevious();
+        getFrom().addDebt(getCost());
+
     }
 
 }

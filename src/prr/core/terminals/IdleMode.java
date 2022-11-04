@@ -1,51 +1,43 @@
 package prr.core.terminals;
 
 
-import prr.core.clients.Client;
-import prr.core.notification.NotificationType;
+import prr.core.exception.AlreadyInModeException;
 import prr.core.terminals.Terminal.TerminalMode;
 
-public class IdleMode extends TerminalMode {
+class IdleMode extends TerminalMode {
 
     //Idle mode can go to Silence(when silencing terminal),Busy(start of communication),Off(when turning off)
 
     public IdleMode(Terminal terminal) {
         terminal.super();
-        String notiType = NotificationType.makeValidNotificationType(getPreviousMode(),toString());
-        if ( notiType != null) {
-            setNotificationType(notiType);
-            sendNotifications();
-        }
+        canSendNotification();
     }
 
     @Override
-    public boolean toOff() {
+    public void toOff() {
         setPreviousMode(new IdleMode(getTerminal()));
         setMode(new OffMode(getTerminal()));
-        return true;
     }
 
     @Override
-    public boolean toIdle() {
-        return false;
+    public void toIdle() throws AlreadyInModeException {
+        throw new AlreadyInModeException();
     }
 
     @Override
-    public boolean toBusy() {
+    public void toBusy() {
         setPreviousMode(new IdleMode(getTerminal()));
         setMode(new BusyMode(getTerminal()));
-        return true;
     }
 
     @Override
-    public boolean toSilence() {
+    public void toSilence() {
         setPreviousMode(new IdleMode(getTerminal()));
         setMode(new SilenceMode(getTerminal()));
-        return true;
     }
 
     @Override
-    public void getCall(Client from) {
+    public void getCall(Terminal from) {
     }
 
     @Override

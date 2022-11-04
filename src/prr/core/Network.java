@@ -10,6 +10,7 @@ import prr.core.terminals.FancyTerminal;
 import prr.core.terminals.Terminal;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
@@ -38,6 +39,7 @@ public class Network implements Serializable {
     /**
      * Serial number for serialization.
      */
+    @Serial
     private static final long serialVersionUID = 202208091753L;
 
     /**
@@ -156,8 +158,8 @@ public class Network implements Serializable {
      */
     public void sendTextCommunication(Terminal from, String toKey, String msg) throws UnknownTerminalKeyException, DestinationOffException {
         Terminal to = getTerminal(toKey);
-        TextCommunication comm = from.makeSMS(to,msg);
-        _communications.put(comm.getId(),comm);
+        TextCommunication comm = from.makeSms(to, msg);
+        _communications.put(comm.getId(), comm);
         from.useTerminal();
         to.useTerminal();
     }
@@ -179,29 +181,56 @@ public class Network implements Serializable {
             comm = from.makeVideoCall(to);
         from.useTerminal();
         to.useTerminal();
-        _communications.put(comm.getId(),comm);
+        _communications.put(comm.getId(), comm);
     }
 
     /**
      * @param clientId client ID
      * @param notisOn  true to set notificationsOn / false to set NotificationsOff
-     * @return true if changes were made / false if no changes were made
      */
-    public boolean setClientNotificationPreference(String clientId, boolean notisOn) throws UnknownClientKeyException {
-        return getClient(clientId).changeNotificationState(notisOn);
+    public void setClientNotificationPreference(String clientId, boolean notisOn) throws UnknownClientKeyException,
+            NotificationPreferenceAlreadySelectedException {
+
+         getClient(clientId).changeNotificationPreference(notisOn);
     }
 
-    public  Collection<Communication> getAllComms(){
+    /**
+     * @return all Communications
+     */
+    public Collection<Communication> getAllComms() {
         return _communications.values();
     }
 
-    public Collection<Terminal> getUnusedTerminals(){
+    /**
+     * @return all terminal that haven't been used
+     */
+    public Collection<Terminal> getUnusedTerminals() {
         List<Terminal> unusedTerminals = new ArrayList<>();
-        for (Terminal t :_terminals.values())
+        for (Terminal t : _terminals.values())
             if (t.isNew())
                 unusedTerminals.add(t);
 
         return unusedTerminals;
+    }
+
+    /**
+     * @return sum of all payments made
+     */
+    public double getGlobalPayments() {
+        double sum = 0;
+        for (Client c : _clients.values())
+            sum += c.getClientPaymentBalance();
+        return sum;
+    }
+
+    /**
+     * @return sum of all debts
+     */
+    public double getGlobalDebts() {
+        double sum = 0;
+        for (Client c : _clients.values())
+            sum += c.getClientDebtBalance();
+        return sum;
     }
 
 }

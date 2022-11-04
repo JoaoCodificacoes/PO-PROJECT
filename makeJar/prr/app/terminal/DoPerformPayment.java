@@ -1,6 +1,7 @@
 package prr.app.terminal;
 
 import prr.core.Network;
+import prr.core.exception.InvalidCommunicationException;
 import prr.core.terminals.Terminal;
 import pt.tecnico.uilib.menus.CommandException;
 
@@ -16,7 +17,10 @@ class DoPerformPayment extends TerminalCommand {
 
     @Override
     protected final void execute() throws CommandException {
-        if (!_receiver.payComm(integerField("commKey")))
+        try {
+            _receiver.payComm(integerField("commKey"));
+        } catch (InvalidCommunicationException ice) {
             _display.popup(Message.invalidCommunication());
+        }
     }
 }

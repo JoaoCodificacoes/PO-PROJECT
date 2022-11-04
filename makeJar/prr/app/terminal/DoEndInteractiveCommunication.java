@@ -4,7 +4,6 @@ import prr.core.Network;
 import prr.core.communications.InteractiveCommunication;
 import prr.core.terminals.Terminal;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Command for ending communication.
@@ -18,8 +17,8 @@ class DoEndInteractiveCommunication extends TerminalCommand {
 
     @Override
     protected final void execute() throws CommandException {
-            InteractiveCommunication c = _receiver.getOngoingCommunication();
-            _receiver.endOngoingCommunication(integerField("duration"));
-            _display.popup(Message.communicationCost(Math.round(c.getCost())));
+        InteractiveCommunication c = _receiver.getOngoingCommunication();
+        _receiver.endOngoingCommunication(integerField("duration"));
+        _display.popup(Message.communicationCost(Math.round(c.getCost())));
     }
 }

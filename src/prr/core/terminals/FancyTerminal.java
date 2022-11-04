@@ -18,22 +18,33 @@ public class FancyTerminal extends Terminal {
         return super.toString("FANCY");
     }
 
+    @Override
     public VideoCommunication makeVideoCall(Terminal to) throws DestinationSilentException,
             DestinationOffException, DestinationBusyException, UnsupportedAtDestinationException {
 
+        getTerminalMode().toBusy();
         to.acceptVideoCall(this);
         VideoCommunication comm = new VideoCommunication(this, to);
+
+
         addMadeComm(comm);
         to.addReceivedComm(comm);
-        addDebt(comm.getCost());
-        getTerminalMode().toBusy();
+
+        getOwner().resetConsecutiveTextComm();
+        getOwner().addConsecutiveVideoComm();
+
         setOngoingComm(comm);
+        to.setOngoingComm(comm);
+
+
         return comm;
     }
 
+    @Override
     protected void acceptVideoCall(Terminal from) throws DestinationBusyException, DestinationOffException,
             DestinationSilentException {
-        getTerminalMode().getCall(from.getOwner());
+
+        getTerminalMode().getCall(from);
         getTerminalMode().toBusy();
     }
 }

@@ -6,7 +6,6 @@ import prr.core.exception.UnknownTerminalKeyException;
 import prr.core.terminals.Terminal;
 import pt.tecnico.uilib.menus.CommandException;
 
-//FIXME add more imports if needed
 
 /**
  * Command for sending a text communication.
@@ -22,13 +21,13 @@ class DoSendTextCommunication extends TerminalCommand {
     @Override
     protected final void execute() throws CommandException {
         try {
-            _network.sendTextCommunication(_receiver,stringField("toID"),stringField("msg"));
+            _network.sendTextCommunication(_receiver, stringField("toID"), stringField("msg"));
 
         } catch (DestinationOffException doe) {
             _display.popup(Message.destinationIsOff(doe.getKey()));
 
-        } catch (UnknownTerminalKeyException e) {
-            throw new prr.app.exception.UnknownTerminalKeyException(e.getKey());
+        } catch (UnknownTerminalKeyException utke) {
+            throw new prr.app.exception.UnknownTerminalKeyException(utke.getKey());
         }
     }
 } 

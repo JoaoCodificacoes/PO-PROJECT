@@ -4,7 +4,6 @@ import prr.core.Network;
 import prr.core.communications.Communication;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME more imports if needed
 
 /**
  * Command for showing all communications.

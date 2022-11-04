@@ -5,6 +5,7 @@ import prr.core.clients.Client.ClientLevel;
 public class PlatinumLevel extends ClientLevel {
 
     private static final int DOWNGRADE_TEXT_COUNT = 2;
+
     public PlatinumLevel(Client client) {
         client.super();
     }
@@ -23,19 +24,19 @@ public class PlatinumLevel extends ClientLevel {
 
     @Override
     public double computeTextCommCost(int n) {
-        if (n<50)
+        if (n < 50)
             return 0;
         return 4;
     }
 
     @Override
     public double computeVideoCommCost(int n) {
-        return 10*n;
+        return 10 * n;
     }
 
     @Override
     public double computeVoiceCommCost(int n) {
-        return 10*n;
+        return 10 * n;
     }
 
 

@@ -4,115 +4,247 @@ package prr.core.terminals;
 import prr.core.clients.Client;
 import prr.core.communications.*;
 import prr.core.exception.*;
-import prr.core.notification.Notification;
-import prr.core.notification.Notificator;
 import prr.core.notification.Notifiable;
+import prr.core.notification.Notification;
+import prr.core.notification.NotificationType;
+import prr.core.notification.Notificator;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-// FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
 /**
  * Abstract terminal.
  */
-public abstract class Terminal implements Serializable /* FIXME maybe add more interfaces */ {
+public abstract class Terminal implements Serializable {
+
+    /**
+     * Client that owns the terminal
+     */
     private final Client _owner;
+    /**
+     * Terminal id
+     */
     private final String _id;
+
+    /**
+     * Terminal debts
+     */
     private double _debt;
+
+    /**
+     * Terminal payments
+     */
     private double _payments;
+
+    /**
+     * Terminal mode
+     */
     private TerminalMode _mode;
+
+    /**
+     * Previous terminal mode
+     */
     private TerminalMode previousMode;
-    private Map<String, Terminal> _friends;
-    private Set<Notifiable> _toNotify;
-    private Map<Integer, Communication> _madeCommunications;
-    private Map<Integer, Communication> _receivedCommunications;
 
+    /**
+     * All terminal friends
+     */
+    private final SortedMap<String, Terminal> _friends;
 
+    /**
+     * All Notifiables to notify
+     */
+    private final Set<Notifiable> _toNotify;
+
+    /**
+     * All communications made
+     */
+    private final SortedMap<Integer, Communication> _madeCommunications;
+    /**
+     * All communications received
+     */
+    private final SortedMap<Integer, Communication> _receivedCommunications;
+
+    /**
+     * Communication that is happening / null if none happening
+     */
     private InteractiveCommunication _ongoingCommunication;
 
+    /**
+     * if used _new = true / else _new = false
+     */
     private boolean _new;
 
 
     /**
      * Serial number for serialization.
      */
+    @Serial
     private static final long serialVersionUID = 202208091753L;
 
+    /**
+     * Class that controls the TerminalMode and its transitions and changes(State Pattern)
+     */
+    protected abstract class TerminalMode implements Notificator, Serializable {
 
-    public abstract class TerminalMode implements Notificator, Serializable {
-        private String _notificationType;
-
-        /* if terminal mode is the same that is asked for return false
-           if terminal mode is changed or can't be changed return true
-           by default all set to true, can be overriden in child class
+        /**
+         * Stores the types of notifcations that can be sent
          */
-        public boolean toOff() {return true;}
+        private final NotificationType _notificationTypes = NotificationType.getInstance();
+        @Serial
+        private static final long serialVersionUID = 202208091753L;
 
-        public boolean toIdle() {
-            return true;
+
+        /**
+         * @throws AlreadyInModeException if the terminal is already off
+         *Changes mode to off
+         */
+        public abstract void toOff() throws AlreadyInModeException;
+
+        /**
+         * @throws AlreadyInModeException if terminal is already idle
+         *  Changes mode to idle
+         */
+        public abstract void toIdle() throws AlreadyInModeException;
+
+        /**
+         * Changes mode to busy
+         * Overriden in modes that use it
+         */
+        public void toBusy() {
         }
 
-        public boolean toBusy() {
-            return true;
+        /**
+         * @throws AlreadyInModeException if mode is already silent
+         * Changes mode to silent
+         */
+        public abstract void toSilence() throws AlreadyInModeException;
+
+
+        /**
+         * Changes to previous mode
+         * Overriden in modes that use it
+         */
+        public void toPrevious() {
         }
 
-        public boolean toSilence() {
-            return true;
-        }
 
+        /**
+         * @return true if it can end communication false otherwise
+         * Overriden in modes that can start communication
+         */
         public boolean canEndComm() {
             return false;
         }
-        public void toPrevious(){}
 
+
+        /**
+         * @return true if it can start communication false otherwise
+         * Overriden in modes that can't start communication
+         */
         public boolean canStartComm() {
             return true;
         }
 
+
+        /**
+         * @param from terminal of communication origin
+         * @throws DestinationOffException if terminal is off
+         */
         public void getText(Client from) throws DestinationOffException {
         }
 
-        public abstract void getCall(Client from) throws DestinationOffException,
+
+        /**
+         * @param from terminal of communication origin
+         * @throws DestinationOffException    if the terminal is off
+         * @throws DestinationSilentException if the terminal is silent
+         * @throws DestinationBusyException   if the terminal is busy
+         */
+        public abstract void getCall(Terminal from) throws DestinationOffException,
                 DestinationSilentException, DestinationBusyException;
 
+
+        /**
+         * @param mode mode to set _mode to
+         */
         public void setMode(TerminalMode mode) {
             _mode = mode;
         }
 
+        /**
+         * Get terminal where the mode is in
+         */
         public Terminal getTerminal() {
             return Terminal.this;
         }
 
-        public void attach(Notifiable o) {
-            if ( o.wantsNotifications())
-                _toNotify.add(o);
+        @Override
+        public void attach(Notifiable n) {
+            if (n.wantsNotifications())
+                _toNotify.add(n);
         }
 
+        @Override
+        public void dettach(Notifiable n) {
+            _toNotify.remove(n);
+        }
 
-        public void sendNotifications() {
+        @Override
+        public void sendNotifications(String notiType) {
             Terminal fromTerminal = getTerminal();
             for (Notifiable o : _toNotify) {
-                Notification noti = new Notification(_notificationType, fromTerminal);
+                Notification noti = new Notification(notiType, fromTerminal);
                 o.getNotification(noti);
             }
             _toNotify.clear();
         }
 
+        /**
+         * @return last TerminalMode
+         */
         public TerminalMode getPreviousMode() {
             return previousMode;
         }
 
+
+        /**
+         * @param mode mode to set previousMode to
+         */
         public void setPreviousMode(TerminalMode mode) {
             previousMode = mode;
         }
 
-        public void setNotificationType(String notificationType) {
-            _notificationType = notificationType;
+
+        /**
+         * Checks if mode can send communication after transition
+         */
+        public void canSendNotification() {
+            if (getPreviousMode() != null) {
+                String notiType = getNotificationType()
+                        .makeValidNotificationType(getPreviousMode().toString(), toString());
+                if (notiType != null) {
+                    sendNotifications(notiType);
+                }
+            }
+        }
+
+
+        /**
+         * @return class that stores the notificationtypes and checks if other types are valid
+         */
+        public NotificationType getNotificationType() {
+            return _notificationTypes;
         }
     }
 
+    /**
+     * @param id Terminal id
+     * @param c  Client that owns the terminal
+     */
     public Terminal(String id, Client c) {
         _id = id;
         _owner = c;
@@ -144,154 +276,271 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
         return _mode.canStartComm();
     }
 
-    public boolean setOnSilent() {
-
-        return _mode.toSilence();
+    /**
+     * @throws AlreadyInModeException if is already silent
+     *                                Changes current mode to silent
+     */
+    public void setOnSilent() throws AlreadyInModeException {
+        _mode.toSilence();
     }
 
-    public boolean turnOff() {
-        return _mode.toOff();
+    /**
+     * @throws AlreadyInModeException if is already off
+     *                                Changes current mode to off
+     */
+    public void turnOff() throws AlreadyInModeException {
+        _mode.toOff();
     }
 
-    public boolean setOnIdle() {
-        return _mode.toIdle();
+    /**
+     * @throws AlreadyInModeException if is already idle
+     *                                Changes current mode to idle
+     */
+    public void setOnIdle() throws AlreadyInModeException {
+        _mode.toIdle();
     }
 
-    public double endOngoingCommunication(int size) {
+    /**
+     * Changes current mode to previous one
+     */
+    public void setOnPrevious() {
+        _mode.toPrevious();
+    }
+
+    /**
+     * @param size communication size
+     */
+    public void endOngoingCommunication(int size) {
         _ongoingCommunication.setDuration(size);
-        _ongoingCommunication.stopComm();
-        double cost = _ongoingCommunication.getCost();
-        _debt += _ongoingCommunication.getCost();
-        _madeCommunications.put(_ongoingCommunication.getId(), _ongoingCommunication);
-        _owner.getClientLevel().checkClientLevelComm();
-        Terminal to = _ongoingCommunication.getTo();
-        to.setOngoingComm(null);
-        _ongoingCommunication = null;
-        to.setOnPrevious();
-        setOnPrevious();
-        return cost;
+        _ongoingCommunication.finishInteractiveComm();
+        _owner.checkClientLevelAfterComm();
     }
 
-    public void setOnPrevious(){_mode.toPrevious();}
 
+    /**
+     * @param to terminal that receives the communication
+     * @return communication made
+     * @throws DestinationOffException    if terminal "to" is off
+     * @throws DestinationSilentException if terminal "to" is silent
+     * @throws DestinationBusyException   if terminal "to" is busy
+     */
     public VoiceCommunication makeVoiceCall(Terminal to) throws DestinationOffException,
             DestinationSilentException, DestinationBusyException {
-
+        _mode.toBusy();
         to.acceptVoiceCall(this);
-        VoiceCommunication c = new VoiceCommunication(this, to);
-        to.addReceivedComm(c);
-        addMadeComm(c);
-        to.setOngoingComm(c);
-        setOngoingComm(c);
-        _mode.toBusy();
-        return c;
-    }
+        VoiceCommunication communication = new VoiceCommunication(this, to);
 
-    protected void acceptVoiceCall(Terminal from) throws DestinationOffException,
-            DestinationSilentException, DestinationBusyException {
-        _mode.getCall(from.getOwner());
-        _mode.toBusy();
-    }
-
-    public TextCommunication makeSMS(Terminal to, String message) throws DestinationOffException {
-        to.acceptSMS(this);
-        TextCommunication communication = new TextCommunication(message, this, to);
-        communication.stopComm();
         to.addReceivedComm(communication);
         addMadeComm(communication);
-        addDebt(communication.getCost());
-        getOwner().getClientLevel().checkClientLevelComm();
+
+        to.setOngoingComm(communication);
+        setOngoingComm(communication);
+        _owner.resetConsecutiveTextComm();
+        _owner.resetConsecutiveVideoComm();
+
         return communication;
     }
 
-    protected void acceptSMS(Terminal from) throws DestinationOffException {
+    /**
+     * @param from communication's origin terminal
+     * @throws DestinationOffException    if this terminal is off
+     * @throws DestinationSilentException if this terminal is silent
+     * @throws DestinationBusyException   if this terminal is busy
+     */
+    protected void acceptVoiceCall(Terminal from) throws DestinationOffException,
+            DestinationSilentException, DestinationBusyException {
+
+        _mode.getCall(from);
+        _mode.toBusy();
+    }
+
+    /**
+     * @param to      terminal that receives the communication
+     * @param message message to send
+     * @return communication made
+     * @throws DestinationOffException if destination is off
+     */
+    public TextCommunication makeSms(Terminal to, String message) throws DestinationOffException {
+        to.acceptSms(this);
+        TextCommunication communication = new TextCommunication(message, this, to);
+
+        to.addReceivedComm(communication);
+        addMadeComm(communication);
+        addDebt(communication.getCost());
+
+        _owner.resetConsecutiveVideoComm();
+        _owner.addConsecutiveTextComm();
+
+        getOwner().checkClientLevelAfterComm();
+        return communication;
+    }
+
+    /**
+     * @param from communication's terminal of origin
+     * @throws DestinationOffException if this terminal is off
+     */
+    protected void acceptSms(Terminal from) throws DestinationOffException {
         _mode.getText(from.getOwner());
     }
 
+    /**
+     * @param to terminal that receives communication
+     * @return communication made
+     * @throws UnsupportedAtOriginException      if video call is unsupported at origin
+     * @throws DestinationSilentException        if destination is silent
+     * @throws DestinationOffException           if destination is off
+     * @throws DestinationBusyException          if destination is busy
+     * @throws UnsupportedAtDestinationException if video call is unsupported at destination
+     */
     public abstract VideoCommunication makeVideoCall(Terminal to) throws UnsupportedAtOriginException,
             DestinationSilentException, DestinationOffException,
             DestinationBusyException, UnsupportedAtDestinationException;
 
+    /**
+     * @param to terminal where the communication originates from
+     * @throws UnsupportedAtDestinationException if this terminal doesn't support video calls
+     * @throws DestinationBusyException          if this terminal is busy
+     * @throws DestinationOffException           if this terminal is off
+     * @throws DestinationSilentException        if this terminal is silent
+     */
     protected abstract void acceptVideoCall(Terminal to) throws UnsupportedAtDestinationException,
             DestinationBusyException, DestinationOffException, DestinationSilentException;
 
+    /**
+     * @return terminal's id
+     */
     public String getId() {
         return _id;
     }
 
+    /**
+     * @return terminal's owner
+     */
     public Client getOwner() {
         return _owner;
     }
 
 
+    /**
+     * @return terminal's friends
+     */
     public Collection<Terminal> getFriends() {
         return _friends.values();
     }
 
+    /**
+     * @return terminal's mode
+     */
     public TerminalMode getTerminalMode() {
         return _mode;
     }
 
 
+    /**
+     * @return terminal's debts
+     */
     public double getBalanceDebt() {
         return _debt;
     }
 
+    /**
+     * @return terminal's payments
+     */
     public double getBalancePayments() {
         return _payments;
     }
 
-    public double getBalance(){return _payments-_debt;}
+    /**
+     * @return terminal's balance
+     */
+    public double getBalance() {
+        return _payments - _debt;
+    }
 
+    /**
+     * @param debt debt to add to current debt
+     */
     public void addDebt(double debt) {
         _debt += debt;
     }
 
-    public boolean payComm(int commId) {
+
+    /**
+     * @param commId Communication's id
+     * @throws InvalidCommunicationException if Communication provided can't be paid
+     */
+    public void payComm(int commId) throws InvalidCommunicationException {
         Communication comm = _madeCommunications.get(commId);
         if (comm == null || comm.isOngoing() || comm.isPaid())
-            return false;
+            throw new InvalidCommunicationException();
         double cost = comm.getCost();
         _debt -= cost;
         _payments += cost;
-        comm.setIsPaid(true);
-        _owner.getClientLevel().checkClientLevelPayment();
-        return true;
+        comm.payCommunication();
+        _owner.checkClientLevelAfterPay();
     }
 
+    /**
+     * @return variable that stores if is used or not
+     */
     public boolean isNew() {
         return _new;
     }
+
 
     public void useTerminal() {
         _new = false;
     }
 
+    /**
+     * @param c communication
+     *          add to made communications stored
+     */
     public void addMadeComm(Communication c) {
         _madeCommunications.put(c.getId(), c);
     }
 
+    /**
+     * @param c communication
+     *          add to received communications stored
+     */
     public void addReceivedComm(Communication c) {
         _receivedCommunications.put(c.getId(), c);
     }
 
+    /**
+     * @param friend to be added to friends stored
+     */
     public void addFriend(Terminal friend) {
         _friends.putIfAbsent(friend.getId(), friend);
     }
 
+    /**
+     * @param friend to be removed from friends stored
+     */
     public void removeFriend(String friend) {
         _friends.remove(friend);
     }
 
+    /**
+     * @param terminal to check if is friend
+     * @return true if is friend / false otherwise
+     */
     public boolean isFriend(Terminal terminal) {
         return _friends.containsKey(terminal.getId());
     }
 
+    /**
+     * @return ongoing communication
+     */
     public InteractiveCommunication getOngoingCommunication() {
         return _ongoingCommunication;
     }
 
-    public String getFriendsString() {
+    /**
+     * @return generate a string with all the friends concatenated
+     */
+    protected String getFriendsString() {
         String friends = "";
         List<Terminal> friendList = new ArrayList<>(getFriends());
         if (!friendList.isEmpty())
@@ -303,10 +552,17 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
     }
 
 
+    /**
+     * @param c communication to set ongoing communication to
+     */
     public void setOngoingComm(InteractiveCommunication c) {
         _ongoingCommunication = c;
     }
 
+    /**
+     * @param type of terminal
+     * @return string with terminal description
+     */
     public String toString(String type) {
 
         return "%s|%s|%s|%s|%d|%d%s".formatted(type,
@@ -318,7 +574,10 @@ public abstract class Terminal implements Serializable /* FIXME maybe add more i
                 getFriendsString());
     }
 
-    public Collection<Communication> getMadeCommunications(){
+    /**
+     * @return communications that this terminal made
+     */
+    public Collection<Communication> getMadeCommunications() {
         return _madeCommunications.values();
     }
 }

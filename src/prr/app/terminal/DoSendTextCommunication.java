@@ -21,10 +21,13 @@ class DoSendTextCommunication extends TerminalCommand {
     @Override
     protected final void execute() throws CommandException {
         try {
-            _network.getTerminal(stringField("toID")).useTerminal();
-            _receiver.useTerminal();
-        } catch (UnknownTerminalKeyException e) {
-            throw new prr.app.exception.UnknownTerminalKeyException(e.getKey());
+            _network.sendTextCommunication(_receiver, stringField("toID"), stringField("msg"));
+
+        } catch (DestinationOffException doe) {
+            _display.popup(Message.destinationIsOff(doe.getKey()));
+
+        } catch (UnknownTerminalKeyException utke) {
+            throw new prr.app.exception.UnknownTerminalKeyException(utke.getKey());
         }
     }
 } 

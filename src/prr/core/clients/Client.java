@@ -1,74 +1,148 @@
 package prr.core.clients;
 
 import prr.core.communications.Communication;
+import prr.core.exception.NotificationPreferenceAlreadySelectedException;
 import prr.core.notification.DefaultDelivery;
+import prr.core.notification.Notifiable;
 import prr.core.notification.Notification;
 import prr.core.notification.NotificationDelivery;
-import prr.core.notification.Notifiable;
 import prr.core.terminals.Terminal;
 
+import java.io.Serial;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 
 public class Client implements Serializable, Notifiable {
+    /**
+     * Client key
+     */
     private final String _key;
+    /**
+     * Client name
+     */
     private final String _name;
+    /**
+     * Client tax number
+     */
     private final int _taxNumber;
+    /**
+     * Client level
+     */
     private ClientLevel _level;
+    /**
+     * Can receive notifications
+     */
     private boolean _receiveNotifications;
+    /**
+     * Notification delivery method
+     */
     private NotificationDelivery _deliveryMethod;
 
-
-    private List<Terminal> _terminals;
+    /**
+     * terminals that client owns
+     */
+    private final List<Terminal> _terminals;
     /**
      * Serial number for serialization.
      */
+    @Serial
     private static final long serialVersionUID = 202208091753L;
 
 
+    /**
+     * Controls in which level client should be in (state pattern)
+     */
+    protected abstract class ClientLevel implements Serializable {
 
-
-    public abstract class ClientLevel implements Serializable {
-
+        /**
+         * Consecutive text communications
+         */
         private int _textCount;
+        /**
+         * Consecutive video communications
+         */
         private int _videoCount;
 
+        /**
+         * Checks if client should be demoted or promoted to be used after a communication
+         */
         public abstract void checkClientLevelComm();
 
+        /**
+         * Checks if client should be demoted or promoted to be used after payment
+         */
         public void checkClientLevelPayment() {
         }
 
+        /**
+         * @param level to set client level to
+         */
         protected void setLevel(ClientLevel level) {
             _level = level;
         }
 
+        /**
+         * @return client which this level belongs to
+         */
         protected Client getClient() {
             return Client.this;
         }
 
+        /**
+         * @param n message length
+         * @return communication cost
+         */
         public abstract double computeTextCommCost(int n);
 
+        /**
+         * @param n communication duration
+         * @return communication cost
+         */
         public abstract double computeVideoCommCost(int n);
 
+        /**
+         * @param n communication duration
+         * @return communication cost
+         */
         public abstract double computeVoiceCommCost(int n);
 
+        /**
+         * @return text count
+         */
         public int getTextCount() {
             return _textCount;
         }
 
+        /**
+         * @param textCount to set stored text count to
+         */
         public void setTextCount(int textCount) {
             _textCount = textCount;
         }
 
+        /**
+         * @return video count
+         */
         public int getVideoCount() {
             return _videoCount;
         }
 
+        /**
+         * @param videoCount to set stored video count to
+         */
         public void setVideoCount(int videoCount) {
             _videoCount = videoCount;
         }
     }
 
+    /**
+     * @param key       Client's key
+     * @param name      Client's name
+     * @param taxNumber Client's number
+     */
     public Client(String key, String name, int taxNumber) {
         _key = key;
         _name = name;
@@ -79,14 +153,21 @@ public class Client implements Serializable, Notifiable {
         _deliveryMethod = new DefaultDelivery();
     }
 
+    /**
+     * @return Client's key
+     */
     public String getClientKey() {
         return _key;
     }
 
+    @Override
     public void setDeliveryMethod(NotificationDelivery deliveryMethod) {
         _deliveryMethod = deliveryMethod;
     }
 
+    /**
+     * @return payments gathered from all the terminals
+     */
     public double getClientPaymentBalance() {
         double sum = 0;
         for (Terminal terminal : _terminals)
@@ -95,6 +176,9 @@ public class Client implements Serializable, Notifiable {
 
     }
 
+    /**
+     * @return debts gathered from all the terminals
+     */
     public double getClientDebtBalance() {
         double sum = 0;
         for (Terminal terminal : _terminals)
@@ -103,10 +187,17 @@ public class Client implements Serializable, Notifiable {
 
     }
 
+
+    /**
+     * @return Client's total balance
+     */
     public double getClientBalance() {
         return getClientPaymentBalance() - getClientDebtBalance();
     }
 
+    /**
+     * @param t terminal to add
+     */
     public void addTerminal(Terminal t) {
         _terminals.add(t);
     }
@@ -128,19 +219,13 @@ public class Client implements Serializable, Notifiable {
 
     /**
      * @param notisOn true = notification On / false = notification Off
-     * @return true if state changed / false otherwise
      */
-    public boolean changeNotificationState(boolean notisOn) {
+    public void changeNotificationPreference(boolean notisOn) throws NotificationPreferenceAlreadySelectedException {
         /* if state and receiveNotifications are equal it means it is already on the wanted state */
         if (notisOn == _receiveNotifications)
-            return false;
+            throw new NotificationPreferenceAlreadySelectedException();
         /* if it isn't on the wanted state set it*/
         _receiveNotifications = notisOn;
-        return true;
-    }
-
-    public ClientLevel getClientLevel() {
-        return _level;
     }
 
     @Override

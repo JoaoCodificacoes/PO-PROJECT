@@ -1,5 +1,7 @@
 package prr.core.exception;
 
+import java.io.Serial;
+
 /**
  *
  */
@@ -8,12 +10,13 @@ public class UnavailableFileException extends Exception {
     /**
      * Serial number for serialization.
      */
+    @Serial
     private static final long serialVersionUID = 202208091753L;
 
     /**
      * The requested filename.
      */
-    private String _filename;
+    private final String _filename;
 
     /**
      * @param filename

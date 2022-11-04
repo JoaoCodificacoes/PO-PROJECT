@@ -1,6 +1,7 @@
 package prr.app.terminal;
 
 import prr.core.Network;
+import prr.core.exception.AlreadyInModeException;
 import prr.core.terminals.Terminal;
 import pt.tecnico.uilib.menus.CommandException;
 
@@ -15,7 +16,11 @@ class DoSilenceTerminal extends TerminalCommand {
 
     @Override
     protected final void execute() throws CommandException {
-        if (!_receiver.setOnSilent())
+        try {
+            _receiver.setOnSilent();
+        } catch (AlreadyInModeException aime) {
             _display.popup(Message.alreadySilent());
+        }
+
     }
 }
