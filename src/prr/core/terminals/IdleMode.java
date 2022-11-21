@@ -10,7 +10,7 @@ class IdleMode extends TerminalMode {
 
     public IdleMode(Terminal terminal) {
         terminal.super();
-        canSendNotification();
+        canSendNotification(getPreviousMode(),this);
     }
 
     @Override

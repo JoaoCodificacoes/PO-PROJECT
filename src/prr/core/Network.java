@@ -1,9 +1,7 @@
 package prr.core;
 
 import prr.core.clients.Client;
-import prr.core.communications.Communication;
-import prr.core.communications.InteractiveCommunication;
-import prr.core.communications.TextCommunication;
+import prr.core.communications.*;
 import prr.core.exception.*;
 import prr.core.terminals.BasicTerminal;
 import prr.core.terminals.FancyTerminal;
@@ -158,7 +156,19 @@ public class Network implements Serializable {
      */
     public void sendTextCommunication(Terminal from, String toKey, String msg) throws UnknownTerminalKeyException, DestinationOffException {
         Terminal to = getTerminal(toKey);
-        TextCommunication comm = from.makeSms(to, msg);
+        int id = _communications.size() + 1;
+        from.makeSms(to, msg);
+        Client owner = from.getOwner();
+        TextCommunication comm = new TextCommunication(msg, from, to, id);
+
+        to.addReceivedComm(comm);
+        from.addMadeComm(comm);
+        from.addDebt(comm.getCost());
+
+        owner.resetConsecutiveVideoComm();
+        owner.addConsecutiveTextComm();
+
+        owner.checkClientLevelAfterComm();
         _communications.put(comm.getId(), comm);
         from.useTerminal();
         to.useTerminal();
@@ -175,10 +185,28 @@ public class Network implements Serializable {
 
         Terminal to = getTerminal(toKey);
         InteractiveCommunication comm;
-        if (type.equals("VOICE"))
-            comm = from.makeVoiceCall(to);
-        else
-            comm = from.makeVideoCall(to);
+        Client owner = from.getOwner();
+        int id = _communications.size() + 1;
+        if (type.equals("VOICE")) {
+
+            from.makeVoiceCall(to);
+            comm = new VoiceCommunication(from, to, id);
+            owner.resetConsecutiveVideoComm();
+
+
+        } else {
+
+            from.makeVideoCall(to);
+            comm = new VideoCommunication(from, to, id);
+            owner.addConsecutiveVideoComm();
+        }
+        owner.resetConsecutiveTextComm();
+
+        to.addReceivedComm(comm);
+        from.addMadeComm(comm);
+
+        to.setOngoingComm(comm);
+        from.setOngoingComm(comm);
         from.useTerminal();
         to.useTerminal();
         _communications.put(comm.getId(), comm);
@@ -191,7 +219,7 @@ public class Network implements Serializable {
     public void setClientNotificationPreference(String clientId, boolean notisOn) throws UnknownClientKeyException,
             NotificationPreferenceAlreadySelectedException {
 
-         getClient(clientId).changeNotificationPreference(notisOn);
+        getClient(clientId).changeNotificationPreference(notisOn);
     }
 
     /**
@@ -233,5 +261,12 @@ public class Network implements Serializable {
         return sum;
     }
 
+    public Collection<Client> getClientsWithDebts() {
+        List<Client> clientsWithDebts = new ArrayList<>(_clients.values());
+        clientsWithDebts.removeIf(client -> client.getClientDebtBalance() == 0);
+        clientsWithDebts.sort(Comparator.comparing(Client::getClientDebtBalance).reversed());
+        return clientsWithDebts;
+
+    }
 }
 

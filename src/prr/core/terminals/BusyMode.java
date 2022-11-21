@@ -53,6 +53,7 @@ class BusyMode extends TerminalMode {
     public void toPrevious() {
         TerminalMode mode = getPreviousMode();
         setPreviousMode(new BusyMode(getTerminal()));
+        canSendNotification(getPreviousMode(),mode);
         setMode(mode);
     }
 }

@@ -4,8 +4,8 @@ import prr.core.terminals.Terminal;
 
 public class VoiceCommunication extends InteractiveCommunication {
 
-    public VoiceCommunication(Terminal from, Terminal to) {
-        super(from, to);
+    public VoiceCommunication(Terminal from, Terminal to,int id) {
+        super(from, to,id);
     }
 
     protected void computeCost() {

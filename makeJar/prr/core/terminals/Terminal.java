@@ -222,22 +222,14 @@ public abstract class Terminal implements Serializable {
         /**
          * Checks if mode can send communication after transition
          */
-        public void canSendNotification() {
+        public void canSendNotification(TerminalMode prev,TerminalMode next) {
             if (getPreviousMode() != null) {
-                String notiType = getNotificationType()
-                        .makeValidNotificationType(getPreviousMode().toString(), toString());
+                String notiType = _notificationTypes
+                        .makeValidNotificationType(prev.toString(), next.toString());
                 if (notiType != null) {
                     sendNotifications(notiType);
                 }
             }
-        }
-
-
-        /**
-         * @return class that stores the notificationtypes and checks if other types are valid
-         */
-        public NotificationType getNotificationType() {
-            return _notificationTypes;
         }
     }
 
@@ -319,26 +311,14 @@ public abstract class Terminal implements Serializable {
 
     /**
      * @param to terminal that receives the communication
-     * @return communication made
      * @throws DestinationOffException    if terminal "to" is off
      * @throws DestinationSilentException if terminal "to" is silent
      * @throws DestinationBusyException   if terminal "to" is busy
      */
-    public VoiceCommunication makeVoiceCall(Terminal to) throws DestinationOffException,
+    public void makeVoiceCall(Terminal to) throws DestinationOffException,
             DestinationSilentException, DestinationBusyException {
         _mode.toBusy();
         to.acceptVoiceCall(this);
-        VoiceCommunication communication = new VoiceCommunication(this, to);
-
-        to.addReceivedComm(communication);
-        addMadeComm(communication);
-
-        to.setOngoingComm(communication);
-        setOngoingComm(communication);
-        _owner.resetConsecutiveTextComm();
-        _owner.resetConsecutiveVideoComm();
-
-        return communication;
     }
 
     /**
@@ -360,19 +340,8 @@ public abstract class Terminal implements Serializable {
      * @return communication made
      * @throws DestinationOffException if destination is off
      */
-    public TextCommunication makeSms(Terminal to, String message) throws DestinationOffException {
+    public void makeSms(Terminal to, String message) throws DestinationOffException {
         to.acceptSms(this);
-        TextCommunication communication = new TextCommunication(message, this, to);
-
-        to.addReceivedComm(communication);
-        addMadeComm(communication);
-        addDebt(communication.getCost());
-
-        _owner.resetConsecutiveVideoComm();
-        _owner.addConsecutiveTextComm();
-
-        getOwner().checkClientLevelAfterComm();
-        return communication;
     }
 
     /**
@@ -385,14 +354,13 @@ public abstract class Terminal implements Serializable {
 
     /**
      * @param to terminal that receives communication
-     * @return communication made
      * @throws UnsupportedAtOriginException      if video call is unsupported at origin
      * @throws DestinationSilentException        if destination is silent
      * @throws DestinationOffException           if destination is off
      * @throws DestinationBusyException          if destination is busy
      * @throws UnsupportedAtDestinationException if video call is unsupported at destination
      */
-    public abstract VideoCommunication makeVideoCall(Terminal to) throws UnsupportedAtOriginException,
+    public abstract void makeVideoCall(Terminal to) throws UnsupportedAtOriginException,
             DestinationSilentException, DestinationOffException,
             DestinationBusyException, UnsupportedAtDestinationException;
 

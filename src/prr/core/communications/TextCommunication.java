@@ -5,8 +5,8 @@ import prr.core.terminals.Terminal;
 public class TextCommunication extends Communication {
     private final String _message;
 
-    public TextCommunication(String message, Terminal from, Terminal to) {
-        super(from, to);
+    public TextCommunication(String message, Terminal from, Terminal to,int id) {
+        super(from, to,id);
         _message = message;
         finishComm();
     }

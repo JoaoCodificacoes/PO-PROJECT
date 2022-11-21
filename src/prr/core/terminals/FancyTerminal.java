@@ -2,7 +2,6 @@ package prr.core.terminals;
 
 
 import prr.core.clients.Client;
-import prr.core.communications.VideoCommunication;
 import prr.core.exception.DestinationBusyException;
 import prr.core.exception.DestinationOffException;
 import prr.core.exception.DestinationSilentException;
@@ -19,25 +18,10 @@ public class FancyTerminal extends Terminal {
     }
 
     @Override
-    public VideoCommunication makeVideoCall(Terminal to) throws DestinationSilentException,
+    public void makeVideoCall(Terminal to) throws DestinationSilentException,
             DestinationOffException, DestinationBusyException, UnsupportedAtDestinationException {
-
         getTerminalMode().toBusy();
         to.acceptVideoCall(this);
-        VideoCommunication comm = new VideoCommunication(this, to);
-
-
-        addMadeComm(comm);
-        to.addReceivedComm(comm);
-
-        getOwner().resetConsecutiveTextComm();
-        getOwner().addConsecutiveVideoComm();
-
-        setOngoingComm(comm);
-        to.setOngoingComm(comm);
-
-
-        return comm;
     }
 
     @Override

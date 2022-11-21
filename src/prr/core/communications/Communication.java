@@ -8,10 +8,6 @@ import java.io.Serializable;
 
 public abstract class Communication implements Serializable {
     /**
-     * keep track of number of communications
-     */
-    private static int _idNumber = 0;
-    /**
      * Communication id
      */
     private final int _id;
@@ -46,11 +42,10 @@ public abstract class Communication implements Serializable {
      * @param from Source terminal
      * @param to   Destination terminal
      */
-    public Communication(Terminal from, Terminal to) {
+    public Communication(Terminal from, Terminal to, int id) {
         _from = from;
         _to = to;
-        _idNumber++;
-        _id = _idNumber;
+        _id = id;
     }
 
 

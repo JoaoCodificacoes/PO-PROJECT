@@ -57,7 +57,6 @@ public class NetworkManager {
             throw new MissingFileAssociationException();
         try (ObjectOutputStream objOut = new ObjectOutputStream(new BufferedOutputStream(
                 new FileOutputStream(_fileName)))) {
-
             objOut.writeObject(_network);
         }
     }

@@ -17,9 +17,8 @@ class DoShowClientsWithDebts extends Command<Network> {
 
     @Override
     protected final void execute() throws CommandException {
-        for (Client client : _receiver.getClients())
-            if (client.getClientDebtBalance() > 0)
-                _display.addLine(client.toString());
+        for (Client client : _receiver.getClientsWithDebts())
+            _display.addLine(client.toString());
         _display.display();
     }
 }

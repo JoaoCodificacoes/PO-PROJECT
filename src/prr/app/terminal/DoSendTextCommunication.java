@@ -5,7 +5,7 @@ import prr.core.exception.DestinationOffException;
 import prr.core.exception.UnknownTerminalKeyException;
 import prr.core.terminals.Terminal;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
+
 
 /**
  * Command for sending a text communication.

@@ -5,8 +5,8 @@ import prr.core.terminals.Terminal;
 public abstract class InteractiveCommunication extends Communication {
     private int _duration;
 
-    public InteractiveCommunication(Terminal from, Terminal to) {
-        super(from, to);
+    public InteractiveCommunication(Terminal from, Terminal to, int id) {
+        super(from, to, id);
         startComm();
     }
 
